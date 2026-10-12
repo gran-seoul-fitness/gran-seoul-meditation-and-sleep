@@ -120,13 +120,7 @@ input[type=text],input[type=tel],input[type=password],select{border:1px solid va
 #cap{position:absolute;left:0;right:0;bottom:34%;text-align:center;padding:0 24px;font-size:18px;line-height:1.5;text-shadow:0 1px 8px rgba(0,0,0,.8);opacity:0;transition:opacity .5s}
 #cap.on{opacity:1}
 
-/* 운영자 */
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
-th{color:var(--muted);font-weight:500}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
-.stat b{display:block;font-family:var(--serif);font-size:26px}
+/* 안내 띠 */
 .banner{background:#fff4dc;border:1px solid #f0d9a8;border-radius:12px;padding:10px 14px;font-size:13px;color:#6b4a12}
 </style>
 </head>
@@ -175,7 +169,7 @@ th{color:var(--muted);font-weight:500}
     <div class="f stack" style="gap:8px"><span style="font-size:14px;font-weight:500">모닝콜 받을 시간</span><div class="choices" id="fTime"></div></div>
     <div class="f stack" style="gap:8px"><span style="font-size:14px;font-weight:500">피트니스 회원이신가요?</span>
       <div class="choices" id="fMember"><button class="choice" data-v="회원">회원</button><button class="choice" data-v="비회원">아직 아니에요</button></div></div>
-    <label class="agree"><input type="checkbox" id="fAgree1"><span>[필수] 프로모션 운영을 위한 개인정보(이름, 소속, 연락처) 수집·이용에 동의합니다. 프로모션 종료 후 [__일] 이내 파기합니다.</span></label>
+    <label class="agree"><input type="checkbox" id="fAgree1"><span>[필수] 프로모션 운영을 위한 개인정보(이름, 소속, 연락처) 수집·이용에 동의합니다. 프로모션 종료 7일 후 파기합니다.</span></label>
     <label class="agree"><input type="checkbox" id="fAgree2"><span>[필수] 2주 동안 모닝콜·턴다운 메시지 수신에 동의합니다.</span></label>
     <p class="err" id="fErr"></p>
     <button class="btn" id="fSubmit">신청 완료</button>
@@ -274,27 +268,6 @@ th{color:var(--muted);font-weight:500}
   </div>
 </section>
 
-<!-- =========================================================
-     화면 5. 운영자 화면 (주소 끝에 #admin)
-     ========================================================= -->
-<section class="screen" id="s-admin">
-  <div class="stack" style="gap:16px">
-    <div><p class="eyebrow">운영자</p><h2 style="font-size:26px;margin-top:6px">프로모션 현황</h2></div>
-    <div id="adminLock" class="stack">
-      <input type="password" id="aPin" placeholder="운영자 PIN">
-      <p class="err" id="aErr"></p>
-      <button class="btn" id="aEnter">확인</button>
-    </div>
-    <div id="adminBody" class="stack" hidden style="gap:16px">
-      <div class="stats" id="aStats"></div>
-      <div class="card"><b>계열사별 신청</b><table id="aCompany" style="margin-top:8px"></table></div>
-      <div class="card"><b>사은품 선택</b><table id="aGifts" style="margin-top:8px"></table></div>
-      <div class="card"><b>모닝 리셋 15 신청</b><table id="aSlots" style="margin-top:8px"></table></div>
-      <button class="btn ghost" id="aCsv">신청자 명단 CSV 내려받기</button>
-    </div>
-  </div>
-</section>
-
 <footer><span data-brand></span><br>Hospitality by Haevichi</footer>
 </div>
 
@@ -317,22 +290,25 @@ th{color:var(--muted);font-weight:500}
    2. 설정 (프로모션 운영 전에 여기만 고치면 됩니다)
    ========================================================= */
 const CONFIG = {
-  brand: '[갑사 브랜드명] · 그랑서울 피트니스',   // 화면 위·아래에 나오는 공간 이름
+  brand: '그랑서울 · 그랑서울 피트니스',   // 화면 위·아래에 나오는 공간 이름
   startDate: '2026-11-16',      // 운영 시작일 (월요일 권장). 이 날부터 14일
   days: 14,
   goal: 10,                      // 완주 기준: 모닝콜 + 턴다운을 합쳐 몇 번 들으면 완주인지
   morningTimes: ['07:00', '07:30', '08:00'],
-  companies: ['[계열사 1]', '[계열사 2]', '[계열사 3]', '기타'],  // 30개 계열사 이름으로 바꿔주세요
+  companies: [   // 임시 이름입니다. 실제 30개 계열사 명단으로 바꿔주세요
+    '계열사 01', '계열사 02', '계열사 03', '계열사 04', '계열사 05', '계열사 06', '계열사 07', '계열사 08', '계열사 09', '계열사 10',
+    '계열사 11', '계열사 12', '계열사 13', '계열사 14', '계열사 15', '계열사 16', '계열사 17', '계열사 18', '계열사 19', '계열사 20',
+    '계열사 21', '계열사 22', '계열사 23', '계열사 24', '계열사 25', '계열사 26', '계열사 27', '계열사 28', '계열사 29', '계열사 30',
+    '기타'
+  ],
   gifts: [
-    { id: 'fitness', name: '피트니스 이용권', desc: '[__일] 자유 이용' },
-    { id: 'sleep',   name: '수면실 이용권',   desc: '[__회] 예약 이용' },
-    { id: 'lounge',  name: '라운지 이용권',   desc: '음료 [__잔]' },
-    { id: 'meeting', name: '회의실 이용권',   desc: '[__시간] 우선 예약' },
-    { id: 'amenity', name: '해비치 어메니티 5종', desc: '바디워시 · 샴푸 · 컨디셔너 · 핸드워시 · 바디로션' }
+    { id: 'fitness', name: '피트니스 1개월 무료 회원권', desc: '7층 피트니스 1개월 자유 이용' },
+    { id: 'lounge',  name: '라운지 커피 1잔',           desc: '라운지에서 커피 1잔' },
+    { id: 'sleep',   name: '수면실 1회 이용권',         desc: '수면실 1회 예약 이용' },
+    { id: 'amenity', name: '어메니티 3종',              desc: '해비치 어메니티 3종' }
   ],
   stretch: { time: '08:20~08:35', weekdays: [2, 4], capacity: 15 },  // 2=화, 4=목
-  adminPin: '0000',              // 데모용. 구글 시트를 연결하면 시트 쪽 PIN으로 확인합니다
-  serverUrl: ''                  // 구글 Apps Script 웹앱 주소. 비워두면 데모 모드(새로고침하면 기록이 사라짐)
+  serverUrl: ''                // 구글 Apps Script 웹앱 주소. 비워두면 데모 모드(새로고침하면 기록이 사라짐)
 };
 
 /* 오디오와 풍경: audio 폴더의 파일을 씁니다 */
@@ -388,11 +364,6 @@ const Store = (() => {
     async chooseGift(code, gift) {
       if (online()) return call('gift', { code, gift });
       if (!mem.gifts.some(g => g.code === code)) mem.gifts.push({ code, gift, at: new Date().toISOString() });
-    },
-    async summary(pin) {
-      if (online()) return (await call('summary', { pin })).data;
-      if (pin !== CONFIG.adminPin) throw new Error('PIN이 맞지 않습니다');
-      return { users: Object.values(mem.users), logs: mem.logs, bookings: mem.bookings, gifts: mem.gifts };
     }
   };
 })();
@@ -698,6 +669,7 @@ const stretchSlots = dayList.filter(d => CONFIG.stretch.weekdays.includes(d.getD
 function show(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === 's-' + name));
   window.scrollTo(0, 0);
+  setHero(name === 'home');
   if (name === 'me') renderMe();
   if (name === 'gift') renderGifts();
 }
@@ -707,8 +679,10 @@ document.addEventListener('click', e => { const b = e.target.closest('[data-go]'
 document.querySelectorAll('[data-brand]').forEach(el => el.textContent = CONFIG.brand);
 $('giftPreview').textContent = CONFIG.gifts.map(g => g.name).join(' · ');
 $('periodText').textContent = `운영 기간 ${fmtDate(dayList[0])} ~ ${fmtDate(dayList[CONFIG.days - 1])} · ${CONFIG.goal}번 들으면 완주`;
-let heroOn = true;
-(function heroLoop(now) { if (!heroOn) return; drawTo('heroCanvas', 'hanok', now / 1000); requestAnimationFrame(heroLoop); })(0);
+/* 첫 화면 한옥 그림: 첫 화면이 보일 때만 움직이고, 다른 화면으로 가면 멈춥니다 (배터리 절약) */
+let heroRAF = 0;
+function heroLoop(now) { drawTo('heroCanvas', 'hanok', now / 1000); heroRAF = requestAnimationFrame(heroLoop); }
+function setHero(on) { cancelAnimationFrame(heroRAF); heroRAF = on ? requestAnimationFrame(heroLoop) : 0; }
 
 /* 같은 그림 코드로 다른 캔버스에 그리기 */
 function drawTo(canvasId, scene, t) {
@@ -833,21 +807,23 @@ function showTicket() {
    6. 재생 화면
    ========================================================= */
 const audio = $('audio'), player = $('player');
-let cur = null, playing = false, startT = 0, ccOn = true, timerMin = 0, timerEnd = 0, logged = false, idleT, dimT;
+let cur = null, playing = false, startT = 0, ccOn = true, timerMin = 0, timerEnd = 0, idleT, dimT;
 const fmt = x => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
 document.addEventListener('click', e => { const b = e.target.closest('[data-play]'); if (b) openPlayer(b.dataset.play); });
 
 function openPlayer(key) {
-  cur = key; logged = false; heroOn = false;
+  cur = key; setHero(false);
   const s = SCENES[key];
   $('pTitle').textContent = s.name; $('pSub').textContent = s.sub; $('pDur').textContent = fmt(s.dur);
-  $('pTimer').hidden = key === 'morning'; timerMin = 0; $('pTimer').textContent = '끄기 타이머';
+  $('pTimer').hidden = key === 'morning'; timerMin = 0; timerEnd = 0; $('pTimer').textContent = '끄기 타이머';
+  // 완료 기록: 재생 버튼을 누르는 순간 오늘의 모닝콜/턴다운 1회로 기록
+  if (state.code) { const td = todayInfo(); if (td.mode === 'live' || !CONFIG.serverUrl) Store.log(state.code, key === 'morning' ? 'morning' : 'night', td.date, key).then(refresh); }
   audio.src = s.audio; audio.currentTime = 0;
   player.classList.add('on'); $('dim').classList.remove('on');
   startT = performance.now();
   togglePlay(true); wake(); requestAnimationFrame(frame);
 }
-function closePlayer() { audio.pause(); playing = false; player.classList.remove('on'); cur = null; heroOn = true; requestAnimationFrame(t => { (function heroLoop(now) { if (!heroOn) return; drawTo('heroCanvas', 'hanok', now / 1000); requestAnimationFrame(heroLoop); })(t); }); renderMe(); }
+function closePlayer() { audio.pause(); playing = false; timerEnd = 0; player.classList.remove('on'); cur = null; renderMe(); }
 function togglePlay(force) {
   const go = force ?? audio.paused;
   if (go) audio.play().then(() => { playing = true; $('pPlay').textContent = '❚❚'; }).catch(() => { $('pPlay').textContent = '▶'; });
@@ -861,10 +837,6 @@ function frame(now) {
   const rows = SUBS[cur]; let txt = '';
   if (ccOn && rows && at > 0) for (const r of rows) if (at >= r[0] && at < r[1]) { txt = r[2]; break; }
   $('cap').textContent = txt; $('cap').classList.toggle('on', !!txt);
-  // 완료 기록: 모닝 노크는 80% 이상, 턴다운은 5분 이상 들으면 1회
-  const need = cur === 'morning' ? s.dur * 0.8 : 300;
-  if (!logged && at >= need && state.code) { logged = true; const td = todayInfo(); if (td.mode === 'live' || !CONFIG.serverUrl) Store.log(state.code, cur === 'morning' ? 'morning' : 'night', td.date, cur).then(refresh); }
-  if (timerEnd && Date.now() > timerEnd) { togglePlay(false); timerEnd = 0; }
   requestAnimationFrame(frame);
 }
 function wake() {
@@ -884,40 +856,17 @@ $('pTimer').onclick = () => {
   $('pTimer').textContent = timerMin ? `${timerMin}분 뒤 꺼짐` : '끄기 타이머';
 };
 audio.onended = () => { playing = false; $('pPlay').textContent = '▶'; };
-
-/* =========================================================
-   7. 운영자 화면
-   ========================================================= */
-let adminData = null;
-$('aEnter').onclick = async () => {
-  try { adminData = await Store.summary($('aPin').value); } catch (e) { $('aErr').textContent = e.message || 'PIN이 맞지 않습니다'; return; }
-  $('adminLock').hidden = true; $('adminBody').hidden = false;
-  const { users, logs, bookings, gifts } = adminData;
-  const finished = users.filter(u => logs.filter(l => l.code === u.code).length >= CONFIG.goal).length;
-  const nonMember = users.filter(u => u.member === '비회원').length;
-  $('aStats').innerHTML = [['신청자', users.length], ['비회원 신청', nonMember], ['총 청취', logs.length], ['완주', finished]].map(([a, b]) => `<div class="stat"><span class="small muted">${a}</span><b>${b}</b></div>`).join('');
-  const by = {}; users.forEach(u => by[u.company] = (by[u.company] || 0) + 1);
-  $('aCompany').innerHTML = '<tr><th>계열사</th><th>신청</th></tr>' + Object.entries(by).sort((a, b) => b[1] - a[1]).map(([c, n]) => `<tr><td>${c}</td><td>${n}</td></tr>`).join('');
-  const gc = {}; gifts.forEach(g => gc[g.gift] = (gc[g.gift] || 0) + 1);
-  $('aGifts').innerHTML = '<tr><th>사은품</th><th>선택</th></tr>' + CONFIG.gifts.map(g => `<tr><td>${g.name}</td><td>${gc[g.id] || 0}</td></tr>`).join('');
-  const sc = {}; bookings.forEach(b => sc[b.slot] = (sc[b.slot] || 0) + 1);
-  $('aSlots').innerHTML = '<tr><th>일시</th><th>신청 / 정원</th></tr>' + stretchSlots.map(s => `<tr><td>${s.label}</td><td>${sc[s.id] || 0} / ${CONFIG.stretch.capacity}</td></tr>`).join('');
-};
-$('aCsv').onclick = () => {
-  const { users, logs, gifts } = adminData;
-  const rows = [['코드', '이름', '계열사', '연락처', '모닝콜', '회원', '청취 횟수', '사은품']].concat(users.map(u => [u.code, u.name, u.company, u.phone, u.morningTime, u.member, logs.filter(l => l.code === u.code).length, (CONFIG.gifts.find(g => g.id === (gifts.find(x => x.code === u.code) || {}).gift) || {}).name || '']));
-  const csv = '﻿' + rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = '모닝콜_턴다운_신청자.csv'; a.click();
+// 끄기 타이머: 오디오 재생 시간에 맞춰 확인하므로 휴대폰 화면이 꺼져 있어도 작동합니다
+audio.ontimeupdate = () => {
+  if (timerEnd && Date.now() >= timerEnd) { togglePlay(false); timerEnd = 0; timerMin = 0; $('pTimer').textContent = '끄기 타이머'; }
 };
 
 /* =========================================================
-   8. 시작: 주소에 따라 첫 화면 결정
+   7. 시작: 주소에 따라 첫 화면 결정
    ?u=코드  → 내 2주 (메시지 링크용)
    ?u=코드&play=morning → 바로 모닝 노크 재생
-   #admin  → 운영자 화면
    ========================================================= */
 (async () => {
-  if (location.hash === '#admin') return show('admin');
   const q = new URLSearchParams(location.search), code = (q.get('u') || '').toUpperCase();
   if (code) {
     const d = await Store.getUser(code).catch(() => null);
