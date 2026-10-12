@@ -212,6 +212,7 @@ input[type=text],input[type=tel],input[type=password],select{border:1px solid va
       <div class="row" style="justify-content:space-between"><b>완주까지</b><span class="small muted" id="meCount"></span></div>
       <div class="progress"><i id="meBar"></i></div>
       <p class="small muted" id="meGoalText"></p>
+      <p class="small" id="meToday"></p>
       <button class="btn gold" id="meGift" hidden>🎁 감사 사은품 고르기</button>
     </div>
 
@@ -290,10 +291,11 @@ input[type=text],input[type=tel],input[type=password],select{border:1px solid va
    2. 설정 (프로모션 운영 전에 여기만 고치면 됩니다)
    ========================================================= */
 const CONFIG = {
-  brand: '그랑서울 · 그랑서울 피트니스',   // 화면 위·아래에 나오는 공간 이름
+  brand: '그랑서울',   // 화면 위·아래에 나오는 공간 이름
   startDate: '2026-11-16',      // 운영 시작일 (월요일 권장). 이 날부터 14일
   days: 14,
   goal: 10,                      // 완주 기준: 모닝콜 + 턴다운을 합쳐 몇 번 들으면 완주인지
+  dailyLimit: 2,                 // 하루 인증 최대 횟수 (모닝콜 1번 + 턴다운 1번)
   morningTimes: ['07:00', '07:30', '08:00'],
   companies: [   // 임시 이름입니다. 실제 30개 계열사 명단으로 바꿔주세요
     '계열사 01', '계열사 02', '계열사 03', '계열사 04', '계열사 05', '계열사 06', '계열사 07', '계열사 08', '계열사 09', '계열사 10',
@@ -305,7 +307,7 @@ const CONFIG = {
     { id: 'fitness', name: '피트니스 1개월 무료 회원권', desc: '7층 피트니스 1개월 자유 이용' },
     { id: 'lounge',  name: '라운지 커피 1잔',           desc: '라운지에서 커피 1잔' },
     { id: 'sleep',   name: '수면실 1회 이용권',         desc: '수면실 1회 예약 이용' },
-    { id: 'amenity', name: '어메니티 3종',              desc: '해비치 어메니티 3종' }
+    { id: 'amenity', name: '어메니티 3종',              desc: '샴푸 · 바디워시 · 바디로션' }
   ],
   stretch: { time: '08:20~08:35', weekdays: [2, 4], capacity: 15 },  // 2=화, 4=목
   serverUrl: ''                // 구글 Apps Script 웹앱 주소. 비워두면 데모 모드(새로고침하면 기록이 사라짐)
@@ -349,7 +351,8 @@ const Store = (() => {
     },
     async log(code, kind, date, scene) {
       if (online()) return call('log', { code, kind, date, scene });
-      if (!mem.logs.some(l => l.code === code && l.kind === kind && l.date === date)) mem.logs.push({ code, kind, date, scene, at: new Date().toISOString() });
+      const mine = mem.logs.filter(l => l.code === code && l.date === date);
+      if (!mine.some(l => l.kind === kind) && mine.length < CONFIG.dailyLimit) mem.logs.push({ code, kind, date, scene, at: new Date().toISOString() });
     },
     async slotCounts() {
       if (online()) return (await call('slots', {})).counts;
@@ -745,15 +748,17 @@ async function renderMe() {
   $('meGift').hidden = n < CONFIG.goal;
   $('meGift').textContent = state.data.gift ? '🎁 내 사은품 교환증 보기' : '🎁 감사 사은품 고르기';
 
+  const todayN = state.data.logs.filter(l => l.date === td.date).length;
+  $('meToday').textContent = `오늘 인증 ${Math.min(todayN, CONFIG.dailyLimit)} / ${CONFIG.dailyLimit} · 모닝콜 1번, 턴다운 1번`;
   const mDone = has('morning', td.date);
   $('cardMorning').classList.toggle('done', mDone);
-  $('mStatus').textContent = mDone ? '오늘 모닝콜 완료 ✓' : `매일 ${user.morningTime} 도착 · 깊게 마시고 짧게 내쉬는 호흡`;
+  $('mStatus').textContent = mDone ? '오늘 모닝콜 인증 완료 ✓ · 다시 들어도 기록되지 않아요' : `매일 ${user.morningTime} 도착 · 깊게 마시고 짧게 내쉬는 호흡`;
 
   const tonight = NIGHT_ORDER[td.idx % NIGHT_ORDER.length], nDone = has('night', td.date);
   $('nTitle').textContent = `오늘 밤: ${SCENES[tonight].name}`;
   $('nightPlay').dataset.play = tonight;
   $('cardNight').classList.toggle('done', nDone);
-  $('nStatus').textContent = nDone ? '오늘 턴다운 완료 ✓' : SCENES[tonight].sub;
+  $('nStatus').textContent = nDone ? '오늘 턴다운 인증 완료 ✓ · 다시 들어도 기록되지 않아요' : SCENES[tonight].sub;
   $('sceneList').innerHTML = NIGHT_ORDER.map(k => `<button data-play="${k}"><b>${SCENES[k].name}</b><span class="muted">${SCENES[k].sub}</span></button>`).join('');
 
   const counts = await Store.slotCounts().catch(() => ({}));
@@ -816,8 +821,13 @@ function openPlayer(key) {
   const s = SCENES[key];
   $('pTitle').textContent = s.name; $('pSub').textContent = s.sub; $('pDur').textContent = fmt(s.dur);
   $('pTimer').hidden = key === 'morning'; timerMin = 0; timerEnd = 0; $('pTimer').textContent = '끄기 타이머';
-  // 완료 기록: 재생 버튼을 누르는 순간 오늘의 모닝콜/턴다운 1회로 기록
-  if (state.code) { const td = todayInfo(); if (td.mode === 'live' || !CONFIG.serverUrl) Store.log(state.code, key === 'morning' ? 'morning' : 'night', td.date, key).then(refresh); }
+  // 인증: 재생 버튼을 누르는 순간 기록. 하루 최대 2번 (모닝콜 1번 + 턴다운 1번)
+  if (state.code && state.data) {
+    const td = todayInfo(), kind = key === 'morning' ? 'morning' : 'night';
+    const todayN = state.data.logs.filter(l => l.date === td.date).length;
+    const canLog = (td.mode === 'live' || !CONFIG.serverUrl) && !has(kind, td.date) && todayN < CONFIG.dailyLimit;
+    if (canLog) Store.log(state.code, kind, td.date, key).then(refresh);
+  }
   audio.src = s.audio; audio.currentTime = 0;
   player.classList.add('on'); $('dim').classList.remove('on');
   startT = performance.now();
