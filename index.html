@@ -122,24 +122,30 @@ body.dark #ceiling{display:none}
    --------------------------------------------------------- */
 #lift{position:fixed;inset:0;z-index:30;overflow:hidden;cursor:pointer;
   background:radial-gradient(circle at 12% 34%,rgba(255,200,120,.35),transparent 22%),radial-gradient(circle at 88% 34%,rgba(255,200,120,.35),transparent 22%),
-  linear-gradient(180deg,#f6e2b8 0 7%,#3a2214 7% 8%,var(--walnut-700) 8%,var(--walnut-800) 76%,var(--burgundy-deep) 76%);transition:opacity .6s}
+  linear-gradient(180deg,var(--walnut-700),var(--walnut-800));transition:opacity .6s;
+  --t:24px;--l:20px;--w:calc(100% - 40px);--h:calc((100vw - 40px) * 1.25)}
+/* 엘리베이터 문 = 첫 화면 프런트 데스크와 똑같은 자리·크기 → 문이 열리면 그대로 로비로 이어짐 */
+.shaft{position:absolute;top:var(--t);left:var(--l);width:var(--w);height:var(--h);overflow:hidden;border-radius:6px;z-index:2;
+  box-shadow:0 0 0 1px rgba(201,164,92,.35),0 0 0 6px var(--walnut-800),0 0 0 8px var(--brass-dark),0 20px 50px rgba(0,0,0,.5)}
+#lift.open .shaft{box-shadow:0 0 0 1px rgba(201,164,92,.35),0 20px 50px rgba(0,0,0,.5);transition:box-shadow 1s}
 #lift.out{opacity:0;pointer-events:none}
-.lift-floor{position:absolute;left:0;right:0;bottom:0;height:24%;background:radial-gradient(circle,rgba(201,164,92,.35) 1.5px,transparent 2px) 0 0/26px 26px,var(--burgundy-deep)}
-.lift-ind{position:absolute;top:16%;left:50%;transform:translate(-50%,-50%);z-index:3;text-align:center;font-family:var(--en);color:var(--brass-light)}
+.lift-floor{position:absolute;left:0;right:0;bottom:0;top:calc(var(--t) + var(--h) + 8px);background:radial-gradient(circle,rgba(201,164,92,.35) 1.5px,transparent 2px) 0 0/26px 26px,var(--burgundy-deep)}
+.lift-ind{position:absolute;top:calc(var(--t) + var(--h) * .2);left:50%;transform:translate(-50%,-50%);z-index:3;transition:opacity .5s;text-align:center;font-family:var(--en);color:var(--brass-light)}
 .lift-ind .box{width:92px;height:62px;margin:0 auto;border-radius:6px;background:#140a06;border:2px solid var(--brass);display:flex;align-items:center;justify-content:center;gap:8px;font-size:40px;line-height:1;box-shadow:0 0 0 4px #3a2214,inset 0 0 14px rgba(0,0,0,.8)}
 .lift-ind .box span{color:#ffb36b;text-shadow:0 0 10px rgba(255,140,60,.8);font-variant-numeric:tabular-nums}
 .lift-ind .box em{font-style:normal;font-size:16px;color:#ffb36b}
 .lift-ind.ding .box{box-shadow:0 0 0 4px #3a2214,0 0 28px rgba(255,190,110,.75),inset 0 0 14px rgba(0,0,0,.8)}
 .lift-ind p{font-size:14px;letter-spacing:.4em;margin-top:12px}
-.door{position:absolute;top:24%;bottom:24%;width:50%;z-index:2;transition:transform 1.2s cubic-bezier(.6,0,.3,1);
+.door{position:absolute;top:0;bottom:0;width:50%;z-index:2;transition:transform 1.2s cubic-bezier(.6,0,.3,1);
   background:linear-gradient(90deg,rgba(0,0,0,.25),transparent 30%,transparent 70%,rgba(0,0,0,.2)),var(--walnut-600);
   box-shadow:inset 0 0 0 10px var(--walnut-700),inset 0 0 0 11px var(--brass-dark)}
 .door::after{content:'';position:absolute;inset:16% 18%;border:2px solid rgba(201,164,92,.5);border-radius:2px;box-shadow:inset 0 0 30px rgba(0,0,0,.35)}
 .door.l{left:0;border-right:2px solid var(--brass)}
 .door.r{right:0;border-left:2px solid var(--brass)}
+#lift.open .lift-ind{opacity:0}
 #lift.open .door.l{transform:translateX(-100%)}
 #lift.open .door.r{transform:translateX(100%)}
-.lift-behind{position:absolute;top:24%;bottom:24%;left:0;right:0;z-index:1;background:var(--walnut-800);overflow:hidden}
+.lift-behind{position:absolute;inset:0;z-index:1;background:var(--walnut-800);overflow:hidden}
 .lift-behind svg{width:100%;height:100%;display:block}
 .skip{position:absolute;right:16px;bottom:max(18px,env(safe-area-inset-bottom));z-index:4;font-family:var(--en);letter-spacing:.2em;font-size:13px;color:var(--brass-light);background:rgba(0,0,0,.35);border:1px solid rgba(201,164,92,.5);border-radius:99px;padding:8px 16px;cursor:pointer}
 
@@ -403,8 +409,7 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 <!-- 엘리베이터 입장 연출 (탭하면 건너뜀) -->
 <div id="lift" hidden>
   <div class="lift-ind" id="liftInd"><div class="box"><em>▲</em><span id="liftNum">1</span></div><p>GRAN SEOUL</p></div>
-  <div class="lift-behind" id="liftBehind"></div>
-  <div class="door l"></div><div class="door r"></div>
+  <div class="shaft" id="liftShaft"><div class="lift-behind" id="liftBehind"></div><div class="door l"></div><div class="door r"></div></div>
   <div class="lift-floor"></div>
   <button class="skip" id="liftSkip">SKIP ›</button>
 </div>
@@ -1228,6 +1233,10 @@ function playLift() {
   let seen = false; try { seen = sessionStorage.getItem('lift') === '1'; sessionStorage.setItem('lift', '1'); } catch (e) {}
   if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const lift = $('lift'); lift.hidden = false;
+  // 첫 화면 데스크의 실제 위치·크기를 재서 엘리베이터 문을 똑같이 맞춤
+  $('s-home').style.animation = 'none';
+  const d = $('homeDesk').getBoundingClientRect();
+  if (d.width) [['--t', d.top], ['--l', d.left], ['--w', d.width], ['--h', d.height]].forEach(([k, v]) => lift.style.setProperty(k, v + 'px'));
   let floor = 1, timers = [];
   const end = () => { timers.forEach(clearTimeout); lift.classList.add('open', 'out'); setTimeout(() => { lift.hidden = true; }, 700); };
   const step = () => {
