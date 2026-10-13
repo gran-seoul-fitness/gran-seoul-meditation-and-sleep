@@ -78,6 +78,22 @@ p,h1,h2,h3,label,.status{text-wrap:balance}
 .btn{display:block;width:100%;border:0;border-radius:4px;padding:17px;font-weight:700;font-size:16px;cursor:pointer;text-align:center;text-decoration:none;
   background:linear-gradient(180deg,#d8b670,var(--brass) 55%,#b08a45);color:var(--walnut-900);letter-spacing:.04em;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 6px 18px rgba(0,0,0,.18)}
 .btn small{display:block;font-family:var(--en);font-size:12px;letter-spacing:.3em;font-weight:600;opacity:.75;margin-bottom:2px}
+/* 골든 티켓 버튼: 오목하게 파인 모서리 · 안쪽 금선 · 브러시드 금속 광택 · 새긴 듯한 글씨 */
+.btn:not(.wine):not(.ghost){position:relative;border-radius:0;padding:18px 20px;overflow:hidden;color:#3f2a0c;text-shadow:0 1px 0 rgba(255,244,210,.7),0 -1px 0 rgba(90,60,15,.25);
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,rgba(0,0,0,.015) 1px 4px),
+    linear-gradient(115deg,#a8782e 0%,#e9c97e 18%,#fbe8b2 30%,#d2a95a 46%,#f3dc9c 60%,#b8893a 78%,#e2bf74 100%);
+  box-shadow:0 8px 20px rgba(60,35,10,.28);
+  -webkit-mask:radial-gradient(circle at 0 0,transparent 11px,#000 11.5px) top left/51% 51% no-repeat,radial-gradient(circle at 100% 0,transparent 11px,#000 11.5px) top right/51% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 11px,#000 11.5px) bottom left/51% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 11px,#000 11.5px) bottom right/51% 51% no-repeat;
+          mask:radial-gradient(circle at 0 0,transparent 11px,#000 11.5px) top left/51% 51% no-repeat,radial-gradient(circle at 100% 0,transparent 11px,#000 11.5px) top right/51% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 11px,#000 11.5px) bottom left/51% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 11px,#000 11.5px) bottom right/51% 51% no-repeat}
+.btn:not(.wine):not(.ghost)::before{content:'';position:absolute;inset:6px;border:1px solid rgba(110,75,20,.55);box-shadow:inset 0 0 0 1px rgba(255,240,200,.35);pointer-events:none;
+  -webkit-mask:radial-gradient(circle at 0 0,transparent 9px,#000 9.5px) top left/51% 51% no-repeat,radial-gradient(circle at 100% 0,transparent 9px,#000 9.5px) top right/51% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 9px,#000 9.5px) bottom left/51% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 9px,#000 9.5px) bottom right/51% 51% no-repeat;
+          mask:radial-gradient(circle at 0 0,transparent 9px,#000 9.5px) top left/51% 51% no-repeat,radial-gradient(circle at 100% 0,transparent 9px,#000 9.5px) top right/51% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 9px,#000 9.5px) bottom left/51% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 9px,#000 9.5px) bottom right/51% 51% no-repeat}
+.btn:not(.wine):not(.ghost)::after{content:'';position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,250,230,.55),transparent);transform:skewX(-18deg);animation:sheen 5s ease-in-out infinite;pointer-events:none}
+@keyframes sheen{0%,70%{left:-60%}100%{left:130%}}
+.btn:not(.wine):not(.ghost) small{color:#5a3c10;opacity:.9}
+.btn:not(.wine):not(.ghost) small::before,.btn:not(.wine):not(.ghost) small::after{content:'◆';font-size:6px;vertical-align:2px;margin:0 8px;opacity:.7}
+.btn:not(.wine):not(.ghost):active{transform:translateY(1px);filter:brightness(.97)}
+.btn:not(.wine):not(.ghost):disabled{filter:grayscale(.4);opacity:.55}
 .btn.wine{background:var(--burgundy);color:var(--brass-light);box-shadow:inset 0 0 0 1px rgba(201,164,92,.5)}
 .btn.ghost{background:transparent;color:inherit;border:1px solid var(--brass);box-shadow:none}
 .btn:disabled{opacity:.4;cursor:default}
