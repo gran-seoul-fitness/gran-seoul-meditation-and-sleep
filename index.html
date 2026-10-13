@@ -241,7 +241,7 @@ input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
   box-shadow:0 14px 34px rgba(0,0,0,.55),inset 0 0 0 1px rgba(201,164,92,.35);
   -webkit-mask:radial-gradient(circle 34px at 50% 0,transparent 33px,#000 34px);mask:radial-gradient(circle 34px at 50% 0,transparent 33px,#000 34px);
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 0 22px}
-.sleeve svg{width:44px;height:96px;stroke:var(--brass);fill:none;stroke-width:1.3;margin-bottom:10px}
+.sleeve svg{width:46px;height:102px;margin-bottom:10px;overflow:visible;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45)) drop-shadow(0 0 10px rgba(255,210,140,.25))}
 .sleeve .brand{font-family:var(--en);letter-spacing:.34em;font-size:14px;font-weight:600}
 .sleeve .tagline{font-family:var(--en);letter-spacing:.24em;font-size:9px;opacity:.9;margin-top:4px}
 
@@ -487,7 +487,25 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
         <div class="kc-checkin"><span>Check-in No.</span><b id="wCheckin"></b></div>
       </div>
       <div class="sleeve">
-        <svg viewBox="0 0 54 120"><circle cx="27" cy="20" r="12"/><circle cx="27" cy="20" r="6"/><path d="M27 32v66M27 74h10M27 84h8M27 96h11"/><path d="M27 8c-3-6 3-6 0 0"/></svg>
+        <svg viewBox="0 0 54 120" aria-hidden="true"><defs>
+          <linearGradient id="kg" x1="0" x2="1"><stop offset="0" stop-color="#8a6526"/><stop offset=".28" stop-color="#f3dca0"/><stop offset=".5" stop-color="#d1aa5c"/><stop offset=".75" stop-color="#a77d33"/><stop offset="1" stop-color="#6e4e1c"/></linearGradient>
+          <linearGradient id="kv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e2a8"/><stop offset="1" stop-color="#a77d33"/></linearGradient></defs>
+          <g fill="url(#kg)" stroke="#5a3e14" stroke-width=".6" stroke-linejoin="round">
+            <!-- 손잡이: 둥근 고리 + 위쪽 작은 고리, 가운데 클로버 모양 구멍 -->
+            <path fill-rule="evenodd" d="M27 3c3 0 4.5 2 4.5 4.2 6 1.8 9.5 6.6 9.5 12.3 0 7.6-6.3 13.5-14 13.5s-14-5.9-14-13.5c0-5.7 3.5-10.5 9.5-12.3C22.5 5 24 3 27 3zM27 10.5c-2.6 0-4.4 1.6-4.4 3.6-2.3.3-3.8 2.1-3.8 4.2 0 2.5 2 4.4 4.6 4.4.9 1.8 2 2.8 3.6 2.8s2.7-1 3.6-2.8c2.6 0 4.6-1.9 4.6-4.4 0-2.1-1.5-3.9-3.8-4.2 0-2-1.8-3.6-4.4-3.6z"/>
+            <!-- 목: 링 · 구슬 · 링 -->
+            <rect x="21.5" y="32.5" width="11" height="3.2" rx="1.4"/>
+            <ellipse cx="27" cy="40.5" rx="5.8" ry="4.6"/>
+            <rect x="22" y="45.2" width="10" height="2.8" rx="1.2"/>
+            <!-- 몸통 -->
+            <rect x="24.6" y="47.5" width="4.8" height="58" rx="1.2"/>
+            <!-- 이빨(비트) -->
+            <path d="M29.2 84h14v5.5h-4v3.5h4v5.5h-6.5v-3h-3.3v6h-4.2z"/>
+            <rect x="23.6" y="104" width="6.8" height="4" rx="1.2"/>
+          </g>
+          <path d="M26 50v52M23.5 40q1-3.5 3.5-4M18 18q1.5-6 7-8" stroke="#fff6dc" stroke-width=".9" fill="none" stroke-linecap="round" opacity=".75"/>
+          <circle cx="27" cy="7.3" r="1.3" fill="#5a3e14" opacity=".55"/>
+        </svg>
         <p class="brand">GRAN SEOUL</p>
         <p class="tagline">MORNING CALL &amp; TURNDOWN · 7F</p>
       </div>
