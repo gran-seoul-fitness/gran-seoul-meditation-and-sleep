@@ -39,7 +39,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0;min-height:100%}
-body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;transition:background .5s}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16.5px;-webkit-font-smoothing:antialiased;transition:background .5s}
 body.dark{background:var(--walnut-900);color:var(--lamp)}
 button,input,select{font:inherit;color:inherit}
 .wrap{max-width:480px;margin:0 auto;padding:24px 20px 56px}
@@ -54,7 +54,7 @@ p{margin:0;line-height:1.7}
 .dark .eyebrow{color:var(--brass)}
 .muted{color:var(--muted)}
 .dark .muted{color:rgba(243,214,168,.62)}
-.small{font-size:13px}
+.small{font-size:14px}
 .stack{display:flex;flex-direction:column;gap:12px}
 .row{display:flex;gap:10px;align-items:center}
 .center{text-align:center}
@@ -79,7 +79,7 @@ p{margin:0;line-height:1.7}
 footer{text-align:center;font-family:var(--en);font-size:13px;color:var(--muted);padding:36px 0 8px;letter-spacing:.24em;text-transform:uppercase}
 footer i{font-style:italic;text-transform:none;letter-spacing:.04em;font-size:14px}
 .dark footer{color:rgba(201,164,92,.7)}
-.banner{background:#fff3d9;border:1px solid #ecd6a6;border-radius:4px;padding:10px 14px;font-size:13px;color:#6b4a12}
+.banner{background:#fff3d9;border:1px solid #ecd6a6;border-radius:4px;padding:10px 14px;font-size:14px;color:#6b4a12}
 
 /* ---------------------------------------------------------
    엘리베이터 입장 (처음 접속할 때 1층 → 7층)
@@ -149,14 +149,14 @@ footer i{font-style:italic;text-transform:none;letter-spacing:.04em;font-size:14
 /* ---------------------------------------------------------
    신청서 (Registration Card)
    --------------------------------------------------------- */
-label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:500;color:var(--muted)}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:14.5px;font-weight:500;color:var(--muted)}
 label.f b{font-family:var(--en);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--brass-dark);font-weight:600}
 input[type=text],input[type=tel],select{border:0;border-bottom:1px solid var(--brass);background:transparent;border-radius:0;padding:10px 2px;font-size:17px;width:100%;color:var(--ink)}
 input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
 .choices{display:flex;gap:8px;flex-wrap:wrap}
 .choice{flex:1;min-width:88px;border:1px solid var(--brass);background:transparent;border-radius:3px;padding:12px 8px;text-align:center;cursor:pointer;font-size:15px}
 .choice[aria-pressed=true]{background:var(--burgundy);border-color:var(--burgundy);color:var(--brass-light);font-weight:700}
-.agree{display:flex;gap:10px;font-size:13px;align-items:flex-start;line-height:1.55;color:var(--muted)}
+.agree{display:flex;gap:10px;font-size:14px;align-items:flex-start;line-height:1.55;color:var(--muted)}
 .agree input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--burgundy)}
 .err{color:#a3262e;font-size:14px;min-height:20px}
 
@@ -171,7 +171,8 @@ input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
 .keycard .kc-top{display:flex;justify-content:space-between;font-family:var(--en);font-size:10px;letter-spacing:.24em;color:var(--brass)}
 .keycard .kc-top b{font-weight:600;color:var(--brass-light);line-height:1.1}
 .keycard .room{font-family:var(--en);font-size:14px;letter-spacing:.3em;margin-top:12px;color:var(--brass)}
-.keycard .room b{display:block;font-size:44px;letter-spacing:.06em;color:var(--brass-light);font-weight:600;line-height:1.05}
+.keycard .room b{display:block;font-size:50px;letter-spacing:.06em;color:var(--brass-light);font-weight:600;line-height:1.05}
+.keycard .kc-note{font-family:var(--en);font-size:11px;letter-spacing:.18em;white-space:nowrap;color:var(--brass);margin-top:10px;text-transform:uppercase}
 .keycard .code{font-family:var(--en);font-size:24px;letter-spacing:.32em;font-weight:600;margin-top:8px;color:#fff3dc}
 .sleeve{position:absolute;left:0;right:0;bottom:0;height:50%;border-radius:4px;z-index:2;text-align:center;color:var(--brass-light);
   background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.06),transparent 60%),linear-gradient(160deg,#7a2331,var(--burgundy) 50%,#4d121b);
@@ -188,12 +189,12 @@ input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
 .room-plate{font-family:var(--en);font-weight:600;letter-spacing:.2em;font-size:13px;padding:7px 12px;border-radius:2px;color:var(--walnut-900);background:linear-gradient(180deg,#e7cd92,#b8924a);white-space:nowrap}
 .progress{height:6px;border-radius:99px;background:#eadfca;overflow:hidden}
 .progress i{display:block;height:100%;background:linear-gradient(90deg,var(--brass-dark),var(--brass));border-radius:99px;transition:width .5s}
-.today-line{font-size:13px;color:var(--burgundy);font-weight:500}
+.today-line{font-size:14.5px;color:var(--burgundy);font-weight:500}
 .svc-card{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center}
 .svc-card h3{font-family:var(--en);font-size:24px}
 .svc-card .ko{font-family:var(--serif);font-size:14px;margin-top:2px}
-.svc-card .status{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.5}
-.play{width:54px;height:54px;border-radius:50%;border:0;cursor:pointer;font-size:17px;background:var(--burgundy);color:var(--brass-light);box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--brass)}
+.svc-card .status{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.5}
+.play{width:60px;height:60px;border-radius:50%;border:0;cursor:pointer;font-size:17px;background:var(--burgundy);color:var(--brass-light);box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--brass)}
 .done .play{background:var(--brass);color:var(--walnut-900)}
 .done .status{color:var(--burgundy);font-weight:500}
 /* 클래식 전화기 */
@@ -207,7 +208,7 @@ input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
 .done .hanger{background:var(--walnut-700)}
 @keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
 .scenes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.scenes button{border:1px solid var(--line);background:#fff;border-radius:4px;padding:12px;text-align:left;cursor:pointer;font-size:13px}
+.scenes button{border:1px solid var(--line);background:#fff;border-radius:4px;padding:14px 12px;text-align:left;cursor:pointer;font-size:14px}
 .scenes button b{display:block;font-family:var(--serif);font-size:14px;font-weight:500}
 summary{cursor:pointer;list-style:none}
 summary::-webkit-details-marker{display:none}
@@ -240,8 +241,8 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 @keyframes merciIn{from{opacity:0;transform:translateY(30px) rotate(-6deg)}to{opacity:1;transform:rotate(-1.5deg)}}
 .merci .script{font-family:var(--script);font-size:62px;line-height:1;color:var(--burgundy)}
 .merci .gname{font-family:var(--serif);font-size:20px;font-weight:500;margin-top:14px}
-.merci .code{font-family:var(--en);font-size:30px;letter-spacing:.3em;font-weight:600;color:var(--brass-dark);margin:12px 0 4px}
-.merci .who{font-size:13px;color:var(--muted)}
+.merci .code{font-family:var(--en);font-size:30px;letter-spacing:.16em;font-weight:600;color:var(--brass-dark);margin:12px 0 4px}
+.merci .who{font-size:14px;color:var(--muted)}
 .velvet .note{color:var(--brass-light);opacity:.85}
 
 /* ---------------------------------------------------------
@@ -339,7 +340,7 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
     <div class="card framed stack" style="gap:20px;padding:26px 22px">
       <label class="f"><b>Guest Name</b>이름<input type="text" id="fName" autocomplete="name" placeholder="홍길동"></label>
       <label class="f"><b>Company</b>소속 계열사<select id="fCompany"></select></label>
-      <label class="f"><b>Contact</b>연락처<input type="tel" id="fPhone" autocomplete="tel" placeholder="010-0000-0000"></label>
+      <label class="f"><b>Contact</b>연락처 · 모닝콜 문자를 받을 번호<input type="tel" id="fPhone" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000"></label>
       <div class="f stack" style="gap:8px"><label class="f" style="gap:0"><b>Wake-up Call</b>모닝콜 받을 시간</label><div class="choices" id="fTime"></div></div>
       <div class="f stack" style="gap:8px"><label class="f" style="gap:0"><b>Membership</b>피트니스 회원이신가요?</label>
         <div class="choices" id="fMember"><button class="choice" data-v="회원">회원</button><button class="choice" data-v="비회원">아직 아니에요</button></div></div>
@@ -361,7 +362,7 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
       <div class="keycard">
         <div class="kc-top"><span>YOUR</span><b>GRAN SEOUL<br>7F</b><span>KEY</span></div>
         <p class="room">ROOM<b id="wRoom"></b></p>
-        <p class="code" id="wCode"></p>
+        <p class="kc-note">Morning Call · Turndown</p>
       </div>
       <div class="sleeve">
         <svg viewBox="0 0 54 120"><circle cx="27" cy="20" r="12"/><circle cx="27" cy="20" r="6"/><path d="M27 32v66M27 74h10M27 84h8M27 96h11"/><path d="M27 8c-3-6 3-6 0 0"/></svg>
@@ -370,7 +371,7 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
       </div>
     </div>
     <p class="muted" id="wText"></p>
-    <p class="small muted">키카드의 6자리 코드로 언제든 다시 들어올 수 있어요.<br>메시지 링크로 들어오면 자동으로 열립니다.</p>
+    <p class="muted">외우실 건 없어요.<br>매일 오는 <b style="color:var(--brass-light)">문자 속 링크</b>만 누르면 바로 객실이 열려요.</p>
     <button class="btn" data-go="me"><small>YOUR STAY</small>내 객실로 가기</button>
   </div>
 </section>
@@ -379,10 +380,11 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 <section class="screen" id="s-login">
   <div class="stack" style="gap:18px">
     <button class="link" data-go="home" style="align-self:flex-start">← Lobby</button>
-    <div class="head center"><p class="eyebrow">Welcome Back</p><h2 class="en" style="margin-top:6px">Your Key, Please</h2><p class="ko-title muted">키카드에 적힌 6자리 코드를 입력하세요</p></div>
+    <div class="head center"><p class="eyebrow">Welcome Back</p><h2 class="en" style="margin-top:6px">Your Room Awaits</h2><p class="ko-title muted">체크인할 때 쓴 전화번호를 입력해 주세요</p></div>
     <div class="card framed" style="padding:28px 22px">
-      <input type="text" id="lCode" maxlength="6" placeholder="K7M2QA" style="text-transform:uppercase;letter-spacing:.3em;text-align:center;font-family:var(--en);font-size:28px;font-weight:600">
+      <input type="tel" id="lPhone" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" style="text-align:center;font-size:26px;letter-spacing:.06em;font-weight:500">
     </div>
+    <p class="small muted center">문자로 받은 링크를 누르면 입력 없이 바로 들어가요.</p>
     <p class="err" id="lErr"></p>
     <button class="btn" id="lSubmit"><small>ENTER</small>객실로 들어가기</button>
   </div>
@@ -436,7 +438,7 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
       <div class="cal" id="cal"></div>
       <div class="row small muted" style="gap:14px"><span class="row" style="gap:6px"><b style="width:7px;height:7px;border-radius:50%;background:var(--brass);display:inline-block"></b>모닝콜</span><span class="row" style="gap:6px"><b style="width:7px;height:7px;border-radius:50%;background:var(--burgundy);display:inline-block"></b>턴다운</span></div>
     </div>
-    <button class="link" id="logout" style="align-self:center">다른 키카드로 들어가기</button>
+    <button class="link" id="logout" style="align-self:center">다른 번호로 들어가기</button>
   </div>
 </section>
 
@@ -538,9 +540,17 @@ const Store = (() => {
   }
   const newCode = () => { const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s = ''; for (let i = 0; i < 6; i++) s += c[Math.floor(Math.random() * c.length)]; return s; };
   return {
+    // 같은 전화번호로 다시 신청하면 새로 만들지 않고 기존 객실을 돌려줍니다 → { code, existing }
     async register(u) {
-      if (online()) return (await call('register', { user: u })).code;
-      const code = newCode(); mem.users[code] = { ...u, code, createdAt: new Date().toISOString() }; return code;
+      if (online()) return call('register', { user: u });
+      const old = Object.values(mem.users).find(x => x.phone === u.phone);
+      if (old) return { code: old.code, existing: true };
+      const code = newCode(); mem.users[code] = { ...u, code, createdAt: new Date().toISOString() }; return { code, existing: false };
+    },
+    // 전화번호로 내 객실 찾기 → 코드 (없으면 null)
+    async findByPhone(phone) {
+      if (online()) return (await call('findByPhone', { phone })).code || null;
+      const u = Object.values(mem.users).find(x => x.phone === phone); return u ? u.code : null;
     },
     async getUser(code) {
       if (online()) return (await call('get', { code })).data;
@@ -881,8 +891,17 @@ document.querySelectorAll('[data-brand]').forEach(el => el.textContent = CONFIG.
 $('giftPreview').textContent = CONFIG.gifts.map(g => g.name).join(' · ');
 $('periodText').textContent = `운영 기간 ${fmtDate(dayList[0])} ~ ${fmtDate(dayList[CONFIG.days - 1])} · ${CONFIG.goal}번 들으면 완주`;
 
-/* 객실 번호: 체크인 코드마다 701~799호 중 하나 (같은 코드는 항상 같은 방) */
-function roomOf(code) { let h = 0; for (const ch of code || '') h = (h * 31 + ch.charCodeAt(0)) % 9973; return 701 + (h % 99); }
+/* 객실 번호 = 전화번호 뒷자리 4개 (장식용. 들어올 때는 전화번호 전체로 구분) */
+const digits = v => String(v || '').replace(/\D/g, '');
+const roomOf = phone => digits(phone).slice(-4);
+
+/* 이 폰 기억하기: 한 번 들어온 폰은 다음부터 자동으로 내 객실이 열립니다 */
+const Device = {
+  get() { try { return localStorage.getItem('gs7-key'); } catch (e) { return null; } },
+  set(code) { try { localStorage.setItem('gs7-key', code); } catch (e) {} },
+  clear() { try { localStorage.removeItem('gs7-key'); } catch (e) {} }
+};
+function enter(code, data) { state.code = code; state.data = data; Device.set(code); history.replaceState(null, '', '?u=' + code); }
 
 /* 프런트 데스크 그림 (아치 · 열쇠 보관함 · 램프 · 나무 데스크). 첫 화면과 체크인 연출에 같이 씁니다 */
 function deskSVG(id) {   // id: 그림마다 다른 이름 (같은 이름을 쓰면 숨겨진 그림 때문에 색이 사라짐)
@@ -919,7 +938,7 @@ function deskSVG(id) {   // id: 그림마다 다른 이름 (같은 이름을 쓰
   <path d="M330 380 V200 A70 70 0 0 1 470 200 V380" fill="#2a170d" stroke="#6e4528" stroke-width="5"/>
   <path d="M118 380 V190 A82 82 0 0 1 282 190 V380" fill="#2a170d" stroke="#6e4528" stroke-width="6"/>
   ${cubby(-60, 262, 8, 3)}${cubby(130, 262, 10, 3, true)}${cubby(342, 262, 8, 3)}
-  <text x="200" y="257" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="3" fill="#c9a45c">ROOMS 701 — 799</text>
+  <text x="200" y="257" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" letter-spacing="3" fill="#c9a45c">GUEST ROOMS · 7F</text>
   <circle cx="200" cy="168" r="5" fill="url(#${id}-brass)"/><path d="M194 172 L206 172 L210 196 L190 196 Z" fill="url(#${id}-brass)"/><circle cx="200" cy="205" r="40" fill="url(#${id}-glow)" opacity=".6"/>
   ${lamp(62)}${lamp(338)}
   <rect y="384" width="400" height="10" fill="#9a5f36"/><rect y="394" width="400" height="14" fill="#6a3d22"/>
@@ -976,32 +995,33 @@ document.querySelectorAll('.choices').forEach(group => group.addEventListener('c
 }));
 const picked = id => $(id).querySelector('[aria-pressed=true]')?.dataset.v;
 $('fSubmit').onclick = async () => {
-  const u = { name: $('fName').value.trim(), company: $('fCompany').value, phone: $('fPhone').value.trim(), morningTime: picked('fTime'), member: picked('fMember') };
-  const err = !u.name ? '이름을 입력해주세요' : !u.company ? '계열사를 선택해주세요' : !/^[0-9\-\s]{9,}$/.test(u.phone) ? '연락처를 확인해주세요' : !u.morningTime ? '모닝콜 시간을 골라주세요' : !u.member ? '회원 여부를 골라주세요' : !($('fAgree1').checked && $('fAgree2').checked) ? '필수 동의 항목에 체크해주세요' : '';
+  const u = { name: $('fName').value.trim(), company: $('fCompany').value, phone: digits($('fPhone').value), morningTime: picked('fTime'), member: picked('fMember') };
+  const err = !u.name ? '이름을 입력해주세요' : !u.company ? '계열사를 선택해주세요' : !/^01\d{8,9}$/.test(u.phone) ? '연락처를 확인해주세요' : !u.morningTime ? '모닝콜 시간을 골라주세요' : !u.member ? '회원 여부를 골라주세요' : !($('fAgree1').checked && $('fAgree2').checked) ? '필수 동의 항목에 체크해주세요' : '';
   $('fErr').textContent = err; if (err) return;
   $('fSubmit').disabled = true;
   try {
-    const code = await Store.register(u);
-    state.code = code; await refresh();
+    const { code, existing } = await Store.register(u);
+    enter(code, await Store.getUser(code));
+    if (existing) { alert('이미 체크인하신 번호예요. 기존 객실로 안내해 드릴게요.'); show('me'); return; }
+    const room = roomOf(u.phone);
     $('wTitle').textContent = `${u.name}님, 환영합니다`;
-    $('wText').textContent = `${fmtDate(dayList[0])}부터 매일 ${u.morningTime}에 모닝콜이 도착합니다.`;
-    $('wCode').textContent = code;
-    $('wRoom').textContent = roomOf(code);
-    history.replaceState(null, '', '?u=' + code);
-    await playCheckin(roomOf(code));
+    $('wText').textContent = `${fmtDate(dayList[0])}부터 매일 ${u.morningTime}에 문자로 모닝콜이 도착합니다.`;
+    $('wRoom').textContent = room;
+    await playCheckin(room);
     show('welcome');
   } catch (e) { $('fErr').textContent = '신청 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.'; }
   $('fSubmit').disabled = false;
 };
 
-/* --- 코드로 들어오기 --- */
+/* --- 전화번호로 들어오기 --- */
 $('lSubmit').onclick = async () => {
-  const code = $('lCode').value.trim().toUpperCase();
-  const d = code.length === 6 ? await Store.getUser(code).catch(() => null) : null;
-  if (!d) { $('lErr').textContent = '코드를 찾을 수 없어요. 다시 확인해주세요.'; return; }
-  state.code = code; state.data = d; history.replaceState(null, '', '?u=' + code); show('me');
+  const phone = digits($('lPhone').value);
+  const code = /^01\d{8,9}$/.test(phone) ? await Store.findByPhone(phone).catch(() => null) : null;
+  const d = code ? await Store.getUser(code).catch(() => null) : null;
+  if (!d) { $('lErr').textContent = '체크인 기록이 없는 번호예요. 번호를 확인하시거나 새로 체크인해 주세요.'; return; }
+  enter(code, d); show('me');
 };
-$('logout').onclick = () => { state.code = null; state.data = null; history.replaceState(null, '', location.pathname); show('login'); };
+$('logout').onclick = () => { state.code = null; state.data = null; Device.clear(); history.replaceState(null, '', location.pathname); show('login'); };
 
 async function refresh() { state.data = await Store.getUser(state.code); }
 
@@ -1016,7 +1036,7 @@ async function renderMe() {
   $('demoFill').hidden = !!CONFIG.serverUrl;
   $('meDay').textContent = `Your Stay · Day ${td.idx + 1} of ${CONFIG.days}`;
   $('meHello').textContent = `${user.name}님의 객실`;
-  $('meRoom').textContent = `ROOM ${roomOf(state.code)}`;
+  $('meRoom').textContent = `ROOM ${roomOf(user.phone)}`;
   const n = doneCount(), pct = Math.min(100, n / CONFIG.goal * 100);
   $('meBar').style.width = pct + '%';
   $('meCount').textContent = `${Math.min(n, CONFIG.goal)} / ${CONFIG.goal}`;
@@ -1081,8 +1101,8 @@ $('giftConfirm').onclick = async () => {
 function showTicket() {
   const g = CONFIG.gifts.find(x => x.id === state.data.gift.gift);
   $('tGift').textContent = g ? g.name : state.data.gift.gift;
-  $('tCode').textContent = state.code;
-  $('tName').textContent = `${state.data.user.name} · ${state.data.user.company} · ROOM ${roomOf(state.code)}`;
+  $('tCode').textContent = `ROOM ${roomOf(state.data.user.phone)}`;
+  $('tName').textContent = `${state.data.user.name} · ${state.data.user.company}`;
   show('ticket');
 }
 
@@ -1151,14 +1171,16 @@ audio.ontimeupdate = () => {
 
 /* =========================================================
    7. 시작: 주소에 따라 첫 화면 결정
-   ?u=코드  → 내 2주 (메시지 링크용)
-   ?u=코드&play=morning → 바로 모닝 노크 재생
+   ?u=코드  → 내 객실 (문자 링크용. 이 폰도 기억합니다)
+   ?u=코드&play=morning → 바로 모닝 노크 재생 (문자 링크용)
+   주소만 열었을 때 → 이 폰이 기억하는 객실, 없으면 로비
    ========================================================= */
 (async () => {
-  const q = new URLSearchParams(location.search), code = (q.get('u') || '').toUpperCase();
+  const q = new URLSearchParams(location.search), code = (q.get('u') || Device.get() || '').toUpperCase();
   if (code) {
     const d = await Store.getUser(code).catch(() => null);
-    if (d) { state.code = code; state.data = d; show('me'); if (q.get('play') && SCENES[q.get('play')]) openPlayer(q.get('play')); return; }
+    if (d) { enter(code, d); show('me'); if (q.get('play') && SCENES[q.get('play')]) openPlayer(q.get('play')); return; }
+    if (!q.get('u')) Device.clear();   // 기억하던 객실이 없어졌으면 지움
   }
   show('home');
   playLift();
