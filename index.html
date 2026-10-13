@@ -124,13 +124,19 @@ body.dark #ceiling{display:none}
   background:radial-gradient(circle at 12% 34%,rgba(255,200,120,.35),transparent 22%),radial-gradient(circle at 88% 34%,rgba(255,200,120,.35),transparent 22%),
   linear-gradient(180deg,var(--walnut-700),var(--walnut-800));transition:opacity .6s;
   --t:24px;--l:20px;--w:calc(100% - 40px);--h:calc((100vw - 40px) * 1.25)}
+/* 첫 화면 위쪽 샹들리에 (엘리베이터 층수 표시가 있던 자리) */
+.chand{height:150px;margin:-24px -20px -10px;position:relative;pointer-events:none}
+.chand svg{width:100%;height:100%;display:block;overflow:visible}
+.chand .sway{transform-origin:200px 0;animation:chSway 6s ease-in-out infinite}
+@keyframes chSway{0%,100%{transform:rotate(-.6deg)}50%{transform:rotate(.6deg)}}
+.chand .fl{animation:flicker 3.5s ease-in-out infinite}
 /* 엘리베이터 문 = 첫 화면 프런트 데스크와 똑같은 자리·크기 → 문이 열리면 그대로 로비로 이어짐 */
 .shaft{position:absolute;top:var(--t);left:var(--l);width:var(--w);height:var(--h);overflow:hidden;border-radius:6px;z-index:2;
   box-shadow:0 0 0 1px rgba(201,164,92,.35),0 0 0 6px var(--walnut-800),0 0 0 8px var(--brass-dark),0 20px 50px rgba(0,0,0,.5)}
 #lift.open .shaft{box-shadow:0 0 0 1px rgba(201,164,92,.35),0 20px 50px rgba(0,0,0,.5);transition:box-shadow 1s}
 #lift.out{opacity:0;pointer-events:none}
 .lift-floor{position:absolute;left:0;right:0;bottom:0;top:calc(var(--t) + var(--h) + 8px);background:radial-gradient(circle,rgba(201,164,92,.35) 1.5px,transparent 2px) 0 0/26px 26px,var(--burgundy-deep)}
-.lift-ind{position:absolute;top:calc(var(--t) + var(--h) * .2);left:50%;transform:translate(-50%,-50%);z-index:3;transition:opacity .5s;text-align:center;font-family:var(--en);color:var(--brass-light)}
+.lift-ind{position:absolute;top:calc(var(--t) / 2);left:50%;transform:translate(-50%,-50%);z-index:3;transition:opacity .5s;text-align:center;font-family:var(--en);color:var(--brass-light)}
 .lift-ind .box{width:92px;height:62px;margin:0 auto;border-radius:6px;background:#140a06;border:2px solid var(--brass);display:flex;align-items:center;justify-content:center;gap:8px;font-size:40px;line-height:1;box-shadow:0 0 0 4px #3a2214,inset 0 0 14px rgba(0,0,0,.8)}
 .lift-ind .box span{color:#ffb36b;text-shadow:0 0 10px rgba(255,140,60,.8);font-variant-numeric:tabular-nums}
 .lift-ind .box em{font-style:normal;font-size:16px;color:#ffb36b}
@@ -142,7 +148,6 @@ body.dark #ceiling{display:none}
 .door::after{content:'';position:absolute;inset:16% 18%;border:2px solid rgba(201,164,92,.5);border-radius:2px;box-shadow:inset 0 0 30px rgba(0,0,0,.35)}
 .door.l{left:0;border-right:2px solid var(--brass)}
 .door.r{right:0;border-left:2px solid var(--brass)}
-#lift.open .lift-ind{opacity:0}
 #lift.open .door.l{transform:translateX(-100%)}
 #lift.open .door.r{transform:translateX(100%)}
 .lift-behind{position:absolute;inset:0;z-index:1;background:var(--walnut-800);overflow:hidden}
@@ -432,6 +437,7 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 <div class="wrap">
 <section class="screen" id="s-home">
   <div class="stack" style="gap:22px">
+    <div class="chand" id="homeChand" aria-hidden="true"></div>
     <div class="desk" id="homeDesk"></div>
     <div class="hero-copy">
       <span class="plate">GRAN SEOUL · 7F</span>
@@ -1199,6 +1205,33 @@ function deskSVG(id) {   // id: 그림마다 다른 이름 (같은 이름을 쓰
 </svg>`;
 }
 $('homeDesk').innerHTML = deskSVG('home');
+/* 샹들리에: 황동 체인 · 2단 팔 · 촛불 전구 · 크리스털 방울 */
+(function chandelier() {
+  const arm = (cx, cy, rx, n, y0) => { let o = '';
+    for (let i = 0; i < n; i++) { const a = Math.PI * (i + .5) / n, x = cx - rx * Math.cos(a), y = cy + rx * .22 * Math.sin(a);
+      o += `<path d="M${cx} ${y0}Q${(cx + x) / 2} ${y + 10} ${x} ${y}" stroke="url(#chb)" stroke-width="2" fill="none"/>
+        <rect x="${x - 3}" y="${y - 4}" width="6" height="5" rx="1" fill="url(#chb)"/>
+        <circle class="fl" cx="${x}" cy="${y - 12}" r="16" fill="url(#chg)"/>
+        <path d="M${x - 2.4} ${y - 4}v-6q2.4-5 4.8 0v6z" fill="#fff4d6"/>
+        <path d="M${x} ${y + 2}l-2.5 6 2.5 5 2.5-5z" fill="#f6f0e6" opacity=".8"/>`; }
+    return o; };
+  let drops = ''; for (let i = 0; i < 9; i++) { const x = 160 + i * 10, y = 112 + 10 * Math.sin(Math.PI * i / 8);
+    drops += `<path d="M${x} ${y - 6}l-2 5 2 5 2-5z" fill="#f6f0e6" opacity=".75"/>`; }
+  $('homeChand').innerHTML = `<svg viewBox="0 0 400 150" preserveAspectRatio="xMidYMin meet">
+    <defs><linearGradient id="chb" x1="0" x2="1"><stop offset="0" stop-color="#8a6a32"/><stop offset=".5" stop-color="#f0d89c"/><stop offset="1" stop-color="#8a6a32"/></linearGradient>
+      <radialGradient id="chg"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".7"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient>
+      <radialGradient id="chh" cx=".5" cy=".55"><stop offset="0" stop-color="#ffcf8a" stop-opacity=".28"/><stop offset="1" stop-color="#ffcf8a" stop-opacity="0"/></radialGradient></defs>
+    <ellipse cx="200" cy="85" rx="190" ry="85" fill="url(#chh)"/>
+    <ellipse cx="200" cy="4" rx="22" ry="5" fill="url(#chb)"/>
+    <g class="sway">
+      <path d="M200 6v36" stroke="url(#chb)" stroke-width="2" stroke-dasharray="3 2"/>
+      <ellipse cx="200" cy="46" rx="7" ry="5" fill="url(#chb)"/><path d="M196 50h8l-1 40h-6z" fill="url(#chb)"/>
+      <ellipse cx="200" cy="66" rx="5" ry="4" fill="#f0d89c"/>
+      ${arm(200, 74, 46, 4, 70)}${arm(200, 96, 86, 6, 92)}
+      <ellipse cx="200" cy="96" rx="12" ry="7" fill="url(#chb)"/><path d="M194 102q6 14 12 0z" fill="url(#chb)"/>
+      ${drops}<circle cx="200" cy="120" r="3" fill="#f6f0e6"/>
+    </g></svg>`;
+})();
 
 /* 아이보리 화면 위쪽 조명 그림 */
 (function ceiling() {
