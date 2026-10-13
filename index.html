@@ -1026,71 +1026,96 @@ function enter(code, data) { state.code = code; state.data = data; Device.set(co
 
 /* 프런트 데스크 그림 (아치 · 열쇠 보관함 · 램프 · 나무 데스크). 첫 화면과 체크인 연출에 같이 씁니다 */
 function deskSVG(id) {   // id: 그림마다 다른 이름 (같은 이름을 쓰면 숨겨진 그림 때문에 색이 사라짐)
+  const u = n => `url(#${id}-${n})`;
+  // 열쇠 보관함: 칸마다 황동 번호판 + 열쇠 또는 편지. 가운데 칸(2줄 7번째)은 체크인 연출 때 빛남
   const cubby = (x0, y0, cols, rows, hl) => {
     let o = '';
     for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
       const x = x0 + c * 14, y = y0 + r * 30, isHl = hl && r === 1 && c === 6;
-      o += `<rect x="${x}" y="${y}" width="14" height="30" fill="#1f120a" stroke="#4a2c19" stroke-width="1.2"/>`;
-      o += `<rect x="${x + 4}" y="${y + 3}" width="6" height="2.6" fill="#c9a45c" opacity=".8"/>`;
+      o += `<rect x="${x}" y="${y}" width="14" height="30" fill="#1a0f08" stroke="#5a3820" stroke-width="1.2"/>`;
+      o += `<rect x="${x + 4}" y="${y + 3}" width="6" height="2.6" fill="#c9a45c" opacity=".85"/>`;
       if ((r * 7 + c * 3) % 4 !== 0) o += `<path d="M${x + 7} ${y + 7}v9" stroke="#b8924a" stroke-width=".8"/><path d="M${x + 5.6} ${y + 16}h2.8l-.6 7h-1.6z" fill="#d9b66a"/>`;
       else o += `<rect x="${x + 3}" y="${y + 9}" width="8" height="18" fill="#efe2c8" opacity=".75"/>`;
-      if (isHl) o += `<g class="cubby-hl"><rect x="${x - 1}" y="${y - 1}" width="16" height="32" fill="none" stroke="#ffd58a" stroke-width="2"/><circle cx="${x + 7}" cy="${y + 15}" r="22" fill="url(#${id}-hl)"/></g>`;
+      if (isHl) o += `<g class="cubby-hl"><rect x="${x - 1}" y="${y - 1}" width="16" height="32" fill="none" stroke="#ffd58a" stroke-width="2"/><circle cx="${x + 7}" cy="${y + 15}" r="22" fill="${u('hl')}"/></g>`;
     }
     return o;
   };
   // 책장 (보관함 양옆)
-  const shelf = x0 => { let o = `<rect x="${x0}" y="262" width="34" height="94" fill="#24150b" stroke="#5a3820" stroke-width="1.5"/>`;
-    [266, 296, 326].forEach(y => { let x = x0 + 3; while (x < x0 + 30) { const w = 3 + ((x * 7) % 3), h = 20 + ((x * 3) % 6);
-      o += `<rect x="${x}" y="${y + 26 - h}" width="${w}" height="${h}" fill="${['#2c3d5c', '#3a2a1c', '#5c2a2a', '#2f4636'][x % 4]}"/>`; x += w + .6; }
-      o += `<rect x="${x0}" y="${y + 26}" width="34" height="2" fill="#5a3820"/>`; });
+  const shelf = x0 => { let o = `<rect x="${x0}" y="262" width="44" height="90" fill="#24150b" stroke="#5a3820" stroke-width="1.5"/>`;
+    [266, 296].forEach(y => { let x = x0 + 3; while (x < x0 + 40) { const w = 3 + ((x * 7) % 3), h = 20 + ((x * 3) % 6);
+      o += `<rect x="${x}" y="${y + 26 - h}" width="${w}" height="${h}" fill="${['#2c3d5c', '#3a2a1c', '#5c2a2a', '#6a1d27'][x % 4]}"/>`; x += w + .6; }
+      o += `<rect x="${x0}" y="${y + 26}" width="44" height="2" fill="#5a3820"/>`; });
+    for (let i = 0; i < 2; i++) o += `<rect x="${x0 + 3 + i * 20}" y="330" width="18" height="18" fill="#3a2414" stroke="#6e4528" stroke-width=".8"/><circle cx="${x0 + 12 + i * 20}" cy="339" r="1.3" fill="#c9a45c"/>`;
     return o; };
-  const lamp = x => `<circle class="lamp-glow" cx="${x}" cy="310" r="110" fill="url(#${id}-glow)"/>
-    <path d="M${x - 36} 334 L${x + 36} 334 L${x + 23} 290 L${x - 23} 290 Z" fill="#f2d3a2"/>
-    <path d="M${x - 36} 334 L${x + 36} 334" stroke="#7a1e28" stroke-width="3"/><path d="M${x - 23} 290 L${x + 23} 290" stroke="#7a1e28" stroke-width="2"/>
-    <rect x="${x - 2}" y="334" width="4" height="50" fill="url(#${id}-brass)"/><ellipse cx="${x}" cy="386" rx="15" ry="4" fill="url(#${id}-brass)"/>`;
-  let dent = ''; for (let x = 2; x < 400; x += 12) dent += `<rect x="${x}" y="67" width="7" height="10" fill="#5a3822"/>`;
+  // 벽등 (랜턴)
+  const sconce = x => `<circle class="lamp-glow" cx="${x}" cy="196" r="70" fill="${u('glow')}"/>
+    <path d="M${x - 7} 186h14l-2 22h-10z" fill="#ffe0a6" stroke="#8a6a32" stroke-width="1.5"/><path d="M${x - 9} 186l9-8 9 8z" fill="#8a6a32"/><path d="M${x} 208v8" stroke="#8a6a32" stroke-width="2"/>`;
+  // 액자
+  const frame = (x, y) => `<rect x="${x}" y="${y}" width="16" height="20" fill="#d9cba8" stroke="#8a6a32" stroke-width="2"/><rect x="${x + 4}" y="${y + 5}" width="8" height="10" fill="#9a8a68" opacity=".6"/>`;
+  // 천장 격자
   let ceil = ''; for (let x = -10; x < 410; x += 50) ceil += `<path d="M${x} 0L${x + 25} 34" stroke="#4a2c19" stroke-width="3"/><path d="M${x + 50} 0L${x + 25} 34" stroke="#4a2c19" stroke-width="3"/>`;
-  let flutes = ''; for (let x = 14; x < 400; x += 26) flutes += `<rect x="${x}" y="408" width="7" height="92" fill="#3a2013" opacity=".55"/><rect x="${x + 7}" y="408" width="1.5" height="92" fill="#a26a3e" opacity=".35"/>`;
+  // 벽 패널
+  let panels = ''; for (const x of [56, 312]) panels += `<rect x="${x}" y="80" width="32" height="160" fill="none" stroke="#6e4528" stroke-width="1.6"/><rect x="${x + 4}" y="84" width="24" height="152" fill="none" stroke="#2a170c" stroke-width="1"/>`;
+  // 카운터 앞판: 아치형 짙은 초록 패널 + 둥근 기둥
+  let front = '';
+  const cols = [10, 72, 134, 200, 266, 328, 390];
+  for (let i = 0; i < cols.length - 1; i++) {
+    const x = cols[i] + 12, w = cols[i + 1] - cols[i] - 24;
+    front += `<path d="M${x} 466V408a${w / 2} 12 0 0 1 ${w} 0V466z" fill="#360c13" stroke="#8a5a32" stroke-width="2"/>
+      <path d="M${x + 4} 462V410a${w / 2 - 4} 10 0 0 1 ${w - 8} 0V462z" fill="none" stroke="#250a0e" stroke-width="1.5"/>`;
+  }
+  cols.forEach(x => { front += `<rect x="${x - 6}" y="386" width="12" height="88" rx="3" fill="${u('col')}"/>
+    <ellipse cx="${x}" cy="400" rx="8" ry="3" fill="#7a4a28"/><ellipse cx="${x}" cy="430" rx="8" ry="3.5" fill="#7a4a28"/><ellipse cx="${x}" cy="462" rx="8" ry="3" fill="#7a4a28"/>
+    <path d="M${x - 9} 368h18l-4 14h-10z" fill="#5a3420"/>`; });
+  // 바닥 팔각 타일
+  let floor = ''; for (let x = -20; x < 420; x += 34) floor += `<path d="M${x + 7} 484h16l7 7v9h-30v-9z" fill="#d8c4a0"/><rect x="${x + 30}" y="486" width="7" height="7" fill="#120a06" transform="rotate(45 ${x + 33.5} 489.5)"/>`;
   return `<svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
   <defs>
-    <linearGradient id="${id}-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d2416"/><stop offset="1" stop-color="#22130b"/></linearGradient>
-    <linearGradient id="${id}-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7b4a29"/><stop offset="1" stop-color="#4a2a17"/></linearGradient>
+    <linearGradient id="${id}-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a2c19"/><stop offset=".6" stop-color="#3a2213"/><stop offset="1" stop-color="#22130b"/></linearGradient>
+    <linearGradient id="${id}-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e4126"/><stop offset="1" stop-color="#3e2414"/></linearGradient>
+    <linearGradient id="${id}-col" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3e2414"/><stop offset=".45" stop-color="#9a6238"/><stop offset="1" stop-color="#3e2414"/></linearGradient>
+    <linearGradient id="${id}-top" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4a40"/><stop offset="1" stop-color="#2a201a"/></linearGradient>
     <linearGradient id="${id}-brass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a6a32"/><stop offset=".5" stop-color="#e9cf96"/><stop offset="1" stop-color="#8a6a32"/></linearGradient>
-    <radialGradient id="${id}-glow"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".8"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient>
+    <radialGradient id="${id}-glow"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".75"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient>
     <radialGradient id="${id}-hl"><stop offset="0" stop-color="#ffd58a" stop-opacity=".6"/><stop offset="1" stop-color="#ffd58a" stop-opacity="0"/></radialGradient>
     <radialGradient id="${id}-vig" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></radialGradient>
   </defs>
-  <rect width="400" height="500" fill="url(#${id}-wall)"/>
-  <!-- 천장 · 샹들리에 · 대리석 간판 -->
+  <rect width="400" height="500" fill="${u('wall')}"/>
+  <!-- 천장 · 샹들리에 -->
   <rect width="400" height="34" fill="#2e1a0e"/>${ceil}
-  <circle cx="200" cy="22" r="90" fill="url(#${id}-glow)" opacity=".7"/>
+  <circle cx="200" cy="20" r="80" fill="${u('glow')}" opacity=".7"/>
   <path d="M200 0v12M184 22q16 10 32 0" stroke="#c9a45c" stroke-width="1.5" fill="none"/><circle cx="184" cy="20" r="4" fill="#fff1d0"/><circle cx="200" cy="24" r="4.5" fill="#fff1d0"/><circle cx="216" cy="20" r="4" fill="#fff1d0"/>
-  <rect y="34" width="400" height="2" fill="#8a6a32"/><rect y="36" width="400" height="26" fill="#13201b"/><rect y="62" width="400" height="2" fill="#8a6a32"/>
-  <text x="200" y="54" text-anchor="middle" font-family="Cinzel,serif" font-size="11" letter-spacing="4" fill="#d9b66a">GRAN SEOUL · CONCIERGE</text>
-  <rect y="64" width="400" height="3" fill="#4a2c19"/>${dent}
-  <path d="M-70 380 V200 A70 70 0 0 1 70 200 V380" fill="#2a170d" stroke="#6e4528" stroke-width="5"/>
-  <path d="M330 380 V200 A70 70 0 0 1 470 200 V380" fill="#2a170d" stroke="#6e4528" stroke-width="5"/>
-  ${cubby(-60, 262, 8, 3)}${cubby(342, 262, 8, 3)}
-  <!-- 가운데 장식장: 시계 박공 · 초록 명판 · 열쇠 보관함 · 양옆 책장 -->
-  <circle cx="200" cy="200" r="90" fill="url(#${id}-glow)" opacity=".45"/>
-  <path d="M104 214 V150 Q104 112 146 110 L168 94 Q200 76 232 94 L254 110 Q296 112 296 150 V214" fill="#2e1b0e" stroke="#6e4528" stroke-width="3"/>
-  <path d="M112 214 V152 Q112 120 148 118 L170 102 Q200 86 230 102 L252 118 Q288 120 288 152 V214" fill="none" stroke="#1f1209" stroke-width="1.5"/>
-  <rect x="88" y="226" width="224" height="158" fill="#2a180c"/>
+  <!-- 대리석 간판 -->
+  <rect y="38" width="400" height="26" fill="#3e0f16"/><rect y="36" width="400" height="2" fill="#8a6a32"/><rect y="64" width="400" height="3" fill="#5a3820"/>
+  <text x="200" y="56" text-anchor="middle" font-family="Cinzel,serif" font-size="11" letter-spacing="4" fill="#d9b66a">GRAN SEOUL · CONCIERGE</text>
+  <!-- 벽 · 기둥 · 벽등 · 액자 -->
+  ${panels}<rect x="0" y="67" width="14" height="320" fill="#2e1a0e"/><rect x="386" y="67" width="14" height="320" fill="#2e1a0e"/>
+  ${sconce(36)}${sconce(364)}${frame(26, 250)}${frame(26, 278)}${frame(358, 250)}${frame(358, 278)}
+  <path d="M110 150 Q110 110 150 108 L170 92 Q200 76 230 92 L250 108 Q290 110 290 150" fill="none" stroke="#6e4528" stroke-width="3"/>
+  <!-- 뒤쪽 장식장: 박공 · 시계 · 초록 명판 · 열쇠 보관함 · 책장 -->
+  <rect x="64" y="226" width="272" height="130" fill="#2a180c"/>
   <path d="M120 230 L120 206 Q160 206 176 196 L200 182 L224 196 Q240 206 280 206 L280 230 Z" fill="#4e2e18" stroke="#8a5a32" stroke-width="1.5"/>
-  <circle cx="200" cy="206" r="11" fill="#e8dcc0" stroke="url(#${id}-brass)" stroke-width="2.5"/><path d="M200 206v-7M200 206l5 3" stroke="#2a170c" stroke-width="1.3"/>
-  <rect x="140" y="236" width="120" height="18" fill="#1e3a2c" stroke="#c9a45c" stroke-width="1"/>
+  <circle cx="200" cy="206" r="11" fill="#e8dcc0" stroke="${u('brass')}" stroke-width="2.5"/><path d="M200 206v-7M200 206l5 3" stroke="#2a170c" stroke-width="1.3"/>
+  <rect x="140" y="236" width="120" height="18" fill="#6a1d27" stroke="#c9a45c" stroke-width="1"/>
   <text x="200" y="249" text-anchor="middle" font-family="Cinzel,serif" font-size="8.5" letter-spacing="2.5" fill="#e9cf96">GUEST ROOMS · 7F</text>
-  ${shelf(92)}${shelf(274)}
+  ${shelf(68)}${shelf(288)}
   <rect x="124" y="258" width="152" height="98" fill="none" stroke="#8a5a32" stroke-width="3"/>
   ${cubby(130, 262, 10, 3, true)}
-  <rect x="88" y="356" width="224" height="28" fill="#3a2214"/>${[96, 120, 256, 280].map(x => `<rect x="${x}" y="360" width="22" height="20" fill="#4e2e18" stroke="#6e4528" stroke-width=".8"/><circle cx="${x + 11}" cy="370" r="1.4" fill="#c9a45c"/>`).join('')}
-  ${lamp(62)}${lamp(338)}
-  <rect y="384" width="400" height="10" fill="#9a5f36"/><rect y="394" width="400" height="14" fill="#6a3d22"/>
-  <rect y="408" width="400" height="92" fill="url(#${id}-wood)"/>${flutes}
-  <rect x="172" y="379" width="56" height="6" rx="1" fill="#1a0f09"/>
-  <ellipse cx="262" cy="383" rx="11" ry="2.5" fill="#5a3d1a"/><path d="M253 382 A9 9 0 0 1 271 382 Z" fill="url(#${id}-brass)"/><circle cx="262" cy="372" r="1.6" fill="#e9cf96"/>
-  <text x="200" y="455" text-anchor="middle" font-family="Cinzel,serif" font-size="13" letter-spacing="6" fill="#e9cf96" opacity=".75">RECEPTION</text>
-  <rect width="400" height="500" fill="url(#${id}-vig)"/>
+  <!-- 카운터 상판 (돌) · 받침 -->
+  <rect x="0" y="352" width="400" height="10" fill="${u('top')}"/><rect x="0" y="362" width="400" height="3" fill="#120c08"/>
+  <rect x="0" y="365" width="400" height="22" fill="#4e2e18"/><rect x="0" y="384" width="400" height="3" fill="#2a170c"/>
+  <!-- 카운터 위 소품: 전화기 · 벨 · 티파니 램프 · 책 -->
+  <path d="M84 352h24l-3-10h-18z" fill="#141414"/><path d="M82 340q14-8 28 0" stroke="#141414" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="96" cy="347" r="3" fill="#c9a45c"/>
+  <ellipse cx="200" cy="352" rx="10" ry="2.2" fill="#5a3d1a"/><path d="M191 351 A9 9 0 0 1 209 351 Z" fill="${u('brass')}"/><circle cx="200" cy="341" r="1.6" fill="#e9cf96"/>
+  <circle class="lamp-glow" cx="318" cy="318" r="80" fill="${u('glow')}"/>
+  <path d="M300 326 Q318 296 336 326 Z" fill="#7a1e28" stroke="#c9a45c" stroke-width="1.2"/><path d="M304 326h28" stroke="#d9b66a" stroke-width="2"/><path d="M318 326v24" stroke="${u('brass')}" stroke-width="3"/><ellipse cx="318" cy="351" rx="9" ry="2.5" fill="#8a6a32"/>
+  <rect x="350" y="334" width="5" height="18" fill="#2c3d5c"/><rect x="356" y="332" width="5" height="20" fill="#5c2a2a"/><rect x="362" y="336" width="4" height="16" fill="#d9cba8"/>
+  <!-- 카운터 앞판 -->
+  <rect x="0" y="387" width="400" height="86" fill="${u('wood')}"/>${front}
+  <rect x="0" y="472" width="400" height="10" fill="#2a170c"/>
+  <!-- 바닥 -->
+  <rect y="482" width="400" height="18" fill="#5a3a22"/>${floor}
+  <rect width="400" height="500" fill="${u('vig')}"/>
 </svg>`;
 }
 $('homeDesk').innerHTML = deskSVG('home');
