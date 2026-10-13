@@ -241,7 +241,7 @@ input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
   box-shadow:0 14px 34px rgba(0,0,0,.55),inset 0 0 0 1px rgba(201,164,92,.35);
   -webkit-mask:radial-gradient(circle 34px at 50% 0,transparent 33px,#000 34px);mask:radial-gradient(circle 34px at 50% 0,transparent 33px,#000 34px);
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 0 22px}
-.sleeve svg{width:46px;height:102px;margin-bottom:10px;overflow:visible;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45)) drop-shadow(0 0 10px rgba(255,210,140,.25))}
+.sleeve svg{width:38px;height:84px;margin-bottom:14px;overflow:visible;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45)) drop-shadow(0 0 10px rgba(255,210,140,.25))}
 .sleeve .brand{font-family:var(--en);letter-spacing:.34em;font-size:14px;font-weight:600}
 .sleeve .tagline{font-family:var(--en);letter-spacing:.24em;font-size:9px;opacity:.9;margin-top:4px}
 
@@ -250,7 +250,17 @@ input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
    --------------------------------------------------------- */
 .room-plate{font-family:var(--en);font-weight:600;letter-spacing:.2em;font-size:13px;padding:7px 12px;border-radius:2px;color:var(--walnut-900);background:linear-gradient(180deg,#e7cd92,#b8924a);white-space:nowrap}
 .progress{height:6px;border-radius:99px;background:#eadfca;overflow:hidden}
-.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--brass-dark),var(--brass));border-radius:99px;transition:width .5s}
+/* 레드 카펫 진행 막대 + 러기지 카트: 들을 때마다 카트가 객실 쪽으로 이동 */
+.carpet{position:relative;height:84px;margin:4px 0 0}
+.carpet .track,.carpet i{position:absolute;left:0;bottom:6px;height:14px;border-radius:2px;background:repeating-linear-gradient(90deg,#7a1e28 0 10px,#6a1a24 10px 20px);box-shadow:inset 0 0 0 1.5px #c9a45c}
+.carpet .track{right:44px;opacity:.22}
+.carpet i{display:block;width:0;max-width:calc(100% - 44px);transition:width 1s ease}
+.carpet .cart{position:absolute;bottom:12px;left:0;width:52px;height:60px;margin-left:-26px;transition:left 1s ease}
+.carpet .cart svg{width:100%;height:100%;overflow:visible}
+.carpet.moving .cart svg{animation:cartBob .5s ease-in-out 2}
+@keyframes cartBob{50%{transform:translateY(-2px)}}
+.carpet .dest{position:absolute;right:0;bottom:4px;width:40px;font-family:var(--en);font-size:10px;letter-spacing:.12em;color:var(--brass-dark);text-align:center;line-height:1.25}
+.carpet .dest b{display:block;font-size:14px}
 .today-line{font-size:14.5px;color:var(--burgundy);font-weight:500}
 .svc-card{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center}
 .svc-card h3{font-family:var(--en);font-size:20px}
@@ -309,6 +319,16 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 .merci .gname{font-family:var(--serif);font-size:20px;font-weight:500;margin-top:14px}
 .merci .code{font-family:var(--en);font-size:26px;letter-spacing:.12em;font-weight:600;color:var(--brass-dark);margin:12px 0 4px}
 .merci .who{font-size:14px;color:var(--muted)}
+.cloche{display:flex;justify-content:center;margin:-8px 0 8px}
+.cloche svg{width:240px;height:185px;overflow:visible}
+.cloche .lid{transform-origin:206px 112px;animation:lidPeek 4s ease-in-out infinite}
+@keyframes lidPeek{0%,60%,100%{transform:none}75%{transform:rotate(-8deg) translateY(-4px)}}
+.cloche.open .lid{animation:lidOpen .9s cubic-bezier(.3,0,.2,1) forwards}
+@keyframes lidOpen{to{transform:rotate(-38deg) translate(-10px,-40px);opacity:.0}}
+#s-gift .head .en,#s-gift .head .eyebrow{color:var(--brass-light)}
+#s-gift .head .ko-title{color:var(--lamp)!important}
+#s-gift .gift b{color:var(--ink)}
+#s-gift .gift .muted{color:var(--muted)!important;font-weight:400}
 .velvet .note{color:var(--lamp);font-size:16px;font-weight:500}
 
 /* ---------------------------------------------------------
@@ -545,8 +565,14 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 
     <div class="card framed stack">
       <div class="row" style="justify-content:space-between"><span class="tag">Your Stay</span><span class="en" style="font-size:16px" id="meCount"></span></div>
-      <div class="progress"><i id="meBar"></i></div>
-      <p class="small muted" id="meGoalText"></p>
+      <div class="carpet" id="carpet"><div class="track"></div><i id="meBar"></i><div class="cart" id="meCart"><svg viewBox="0 0 70 80" aria-hidden="true"><defs><linearGradient id="cartb" x1="0" x2="1"><stop offset="0" stop-color="#8a6a32"/><stop offset=".5" stop-color="#f0d89c"/><stop offset="1" stop-color="#8a6a32"/></linearGradient></defs>
+          <circle cx="35" cy="6" r="4" fill="url(#cartb)"/><path d="M35 10v8M27 18h16" stroke="url(#cartb)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M10 64V30Q10 12 35 12Q60 12 60 30V64" fill="none" stroke="url(#cartb)" stroke-width="4"/>
+          <path d="M16 64V32Q16 18 35 18Q54 18 54 32V64" fill="none" stroke="url(#cartb)" stroke-width="2.5" opacity=".8"/>
+          <rect x="22" y="40" width="20" height="16" rx="2" fill="#6a1d27" stroke="#c9a45c"/><rect x="30" y="48" width="18" height="12" rx="2" fill="#3e2414" stroke="#c9a45c"/>
+          <rect x="4" y="62" width="62" height="7" rx="2" fill="#7a1e28" stroke="#2a170c" stroke-width="1.5"/>
+          <circle class="wh" cx="14" cy="73" r="5.5" fill="#1a1a1a" stroke="#c9a45c" stroke-width="2"/><circle class="wh" cx="56" cy="73" r="5.5" fill="#1a1a1a" stroke="#c9a45c" stroke-width="2"/></svg></div><div class="dest">ROOM<b id="meDest"></b></div></div>
+      <p class="small muted nl" id="meGoalText"></p>
       <p class="today-line" id="meToday"></p>
       <button class="btn wine" id="meGift" hidden></button>
     </div>
@@ -589,6 +615,21 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 <section class="screen" id="s-gift">
   <div class="stack" style="gap:16px">
     <button class="link" data-go="me" style="align-self:flex-start">← Your Stay</button>
+    <div class="cloche" id="cloche"><svg viewBox="0 0 260 200" aria-hidden="true"><defs>
+        <linearGradient id="dm" x1="0" x2="1"><stop offset="0" stop-color="#5e5246"/><stop offset=".25" stop-color="#f6efe0"/><stop offset=".45" stop-color="#b8ab98"/><stop offset=".7" stop-color="#fff8e8"/><stop offset="1" stop-color="#6e6050"/></linearGradient>
+        <linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dcd6cc"/></linearGradient>
+        <radialGradient id="sp"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".45"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient></defs>
+        <ellipse cx="140" cy="80" rx="120" ry="80" fill="url(#sp)"/>
+        <rect x="104" y="98" width="70" height="20" rx="3" fill="#6a1d27" stroke="#c9a45c" stroke-width="1.5"/>
+        <text x="139" y="112" text-anchor="middle" font-family="Cinzel,serif" font-size="9" letter-spacing="1.5" fill="#f3dca0">FOR YOU</text>
+        <g class="lid"><path d="M74 112Q74 44 140 42Q206 44 206 112Z" fill="url(#dm)"/>
+          <rect x="133" y="28" width="14" height="10" rx="3" fill="url(#dm)"/><ellipse cx="140" cy="27" rx="12" ry="4" fill="url(#dm)"/></g>
+        <ellipse cx="140" cy="122" rx="84" ry="7" fill="url(#dm)"/><ellipse cx="140" cy="121" rx="84" ry="5" fill="none" stroke="#fff" stroke-opacity=".5"/>
+        <g transform="translate(140 128)">
+          <path d="M-150 90L-62 40L-48 64L-130 112Z" fill="#141414"/>
+          <path d="M-64 38L-50 62" stroke="#f6f2ea" stroke-width="7" stroke-linecap="round"/>
+          <path d="M-56 46Q-30 22-8 6Q4-2 14-2Q30-2 36 4Q30 8 18 8Q30 10 34 16Q26 18 14 14Q8 28-10 38Q-28 50-44 60Z" fill="url(#gl)" stroke="#b9b0a2" stroke-width="1"/>
+          <path d="M-6 6q10-4 18-2M2 12q8-1 14 1" stroke="#c9c1b4" stroke-width="1" fill="none"/></g></svg></div>
     <div class="head center"><p class="eyebrow">Complimentary Gift</p><h2 class="en" style="margin-top:6px">With Our Thanks</h2><p class="ko-title muted">완주를 축하합니다. 사은품을 하나 골라주세요</p></div>
     <div class="stack" id="giftList"></div>
     <button class="btn" id="giftConfirm" disabled>이걸로 할게요</button>
@@ -1033,7 +1074,7 @@ const stretchSlots = dayList.filter(d => CONFIG.stretch.weekdays.includes(d.getD
 function show(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === 's-' + name));
   window.scrollTo(0, 0);
-  document.body.className = name === 'welcome' ? 'dark lobby' : name === 'home' ? 'dark' : name === 'ticket' ? 'dark velvet' : '';
+  document.body.className = name === 'welcome' ? 'dark lobby' : name === 'home' ? 'dark' : name === 'ticket' || name === 'gift' ? 'dark velvet' : '';
   if (name === 'me') renderMe();
   if (name === 'gift') renderGifts();
   if (name === 'signup') requestAnimationFrame(initWheel);   // 화면이 보인 뒤에 휠 위치를 맞춤
@@ -1307,9 +1348,13 @@ async function renderMe() {
   $('meRoom').textContent = `ROOM ${user.room}`;
   $('meCheckin').textContent = checkinNo(user.phone);
   const n = doneCount(), pct = Math.min(100, n / CONFIG.goal * 100);
-  $('meBar').style.width = pct + '%';
+  // 카트는 카펫(오른쪽 객실 표시 앞까지) 위에서 진행률만큼 이동
+  $('meBar').style.width = `calc((100% - 44px) * ${pct / 100})`;
+  $('meCart').style.left = `clamp(26px, calc((100% - 44px) * ${pct / 100}), calc(100% - 72px))`;
+  $('meDest').textContent = user.room;
+  $('carpet').classList.remove('moving'); void $('carpet').offsetWidth; $('carpet').classList.add('moving');
   $('meCount').textContent = `${Math.min(n, CONFIG.goal)} / ${CONFIG.goal}`;
-  $('meGoalText').textContent = n >= CONFIG.goal ? '완주했어요! 감사 사은품을 골라주세요.' : `모닝콜과 턴다운을 합쳐 ${CONFIG.goal - n}번 더 들으면 완주입니다.`;
+  $('meGoalText').textContent = n >= CONFIG.goal ? '객실에 도착했어요! 감사 사은품을 골라주세요.' : `짐을 싣고 객실로 가는 중이에요.\n${CONFIG.goal - n}번 더 들으면 도착(완주)입니다.`;
   $('meGift').hidden = n < CONFIG.goal;
   $('meGift').textContent = state.data.gift ? 'Merci 카드(교환증) 보기' : '감사 사은품 고르기';
 
@@ -1365,7 +1410,10 @@ $('giftConfirm').onclick = async () => {
   if (!state.giftPick || doneCount() < CONFIG.goal) return;
   const g = CONFIG.gifts.find(x => x.id === state.giftPick);
   if (!confirm(`'${g.name}'(으)로 할까요? 선택 후에는 바꿀 수 없어요.`)) return;
-  await Store.chooseGift(state.code, state.giftPick); await refresh(); showTicket();
+  await Store.chooseGift(state.code, state.giftPick); await refresh();
+  // 클로슈 뚜껑이 열리고 Merci 카드로
+  $('cloche').classList.add('open'); window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => { $('cloche').classList.remove('open'); showTicket(); }, 1000);
 };
 function showTicket() {
   const g = CONFIG.gifts.find(x => x.id === state.data.gift.gift);
