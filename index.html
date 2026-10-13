@@ -1168,8 +1168,6 @@ function deskSVG(id) {   // id: 그림마다 다른 이름 (같은 이름을 쓰
   <rect width="400" height="500" fill="${u('wall')}"/>
   <!-- 천장 · 샹들리에 -->
   <rect width="400" height="34" fill="#2e1a0e"/>${ceil}
-  <circle cx="200" cy="20" r="80" fill="${u('glow')}" opacity=".7"/>
-  <path d="M200 0v12M184 22q16 10 32 0" stroke="#c9a45c" stroke-width="1.5" fill="none"/><circle cx="184" cy="20" r="4" fill="#fff1d0"/><circle cx="200" cy="24" r="4.5" fill="#fff1d0"/><circle cx="216" cy="20" r="4" fill="#fff1d0"/>
   <!-- 대리석 간판 -->
   <rect y="38" width="400" height="26" fill="#3e0f16"/><rect y="36" width="400" height="2" fill="#8a6a32"/><rect y="64" width="400" height="3" fill="#5a3820"/>
   <text x="200" y="56" text-anchor="middle" font-family="Cinzel,serif" font-size="11" letter-spacing="4" fill="#d9b66a">GRAN SEOUL · CONCIERGE</text>
@@ -1205,31 +1203,35 @@ function deskSVG(id) {   // id: 그림마다 다른 이름 (같은 이름을 쓰
 </svg>`;
 }
 $('homeDesk').innerHTML = deskSVG('home');
-/* 샹들리에: 황동 체인 · 2단 팔 · 촛불 전구 · 크리스털 방울 */
+/* 샹들리에: 청동 체인 · 소용돌이 장식 팔 · 천 갓 전등 (복도 사진 스타일) */
 (function chandelier() {
-  const arm = (cx, cy, rx, n, y0) => { let o = '';
-    for (let i = 0; i < n; i++) { const a = Math.PI * (i + .5) / n, x = cx - rx * Math.cos(a), y = cy + rx * .22 * Math.sin(a);
-      o += `<path d="M${cx} ${y0}Q${(cx + x) / 2} ${y + 10} ${x} ${y}" stroke="url(#chb)" stroke-width="2" fill="none"/>
-        <rect x="${x - 3}" y="${y - 4}" width="6" height="5" rx="1" fill="url(#chb)"/>
-        <circle class="fl" cx="${x}" cy="${y - 12}" r="16" fill="url(#chg)"/>
-        <path d="M${x - 2.4} ${y - 4}v-6q2.4-5 4.8 0v6z" fill="#fff4d6"/>
-        <path d="M${x} ${y + 2}l-2.5 6 2.5 5 2.5-5z" fill="#f6f0e6" opacity=".8"/>`; }
-    return o; };
-  let drops = ''; for (let i = 0; i < 9; i++) { const x = 160 + i * 10, y = 112 + 10 * Math.sin(Math.PI * i / 8);
-    drops += `<path d="M${x} ${y - 6}l-2 5 2 5 2-5z" fill="#f6f0e6" opacity=".75"/>`; }
+  const shade = (x, y, sc = 1) => `<circle class="fl" cx="${x}" cy="${y + 4 * sc}" r="${22 * sc}" fill="url(#chg)"/>
+    <path d="M${x - 6 * sc} ${y - 6 * sc}L${x + 6 * sc} ${y - 6 * sc}L${x + 10 * sc} ${y + 9 * sc}L${x - 10 * sc} ${y + 9 * sc}Z" fill="url(#chs)" stroke="#c9a45c" stroke-width=".6"/>
+    <path d="M${x - 10 * sc} ${y + 9 * sc}h${20 * sc}" stroke="#8a6a32" stroke-width="1"/>`;
+  const arm = (side, cx, y0, dx, dy, sc = 1) => { const x = cx + side * dx, y = y0 + dy;
+    return `<path d="M${cx} ${y0}C${cx + side * dx * .3} ${y0 + 18} ${x - side * 10} ${y + 22} ${x} ${y + 14}" stroke="url(#chb)" stroke-width="2.4" fill="none"/>
+      <path d="M${cx + side * dx * .45} ${y0 + 14}q${side * 6} 8 ${side} 12q${-side * 4} 2 ${-side * 5} -2" stroke="url(#chb)" stroke-width="1.4" fill="none"/>
+      <path d="M${x} ${y + 14}v-5" stroke="url(#chb)" stroke-width="2"/>${shade(x, y - 4, sc)}`; };
+  let arms = '';
+  // 위층 2개 + 아래층 6개 (사진처럼 2단)
+  [[30, 62, 0, .95], [36, 84, 14, 1.15], [72, 84, 12, 1.15], [104, 86, 6, 1.15]].forEach(([dx, y0, dy, sc]) => { arms += arm(-1, 200, y0, dx, dy, sc) + arm(1, 200, y0, dx, dy, sc); });
   $('homeChand').innerHTML = `<svg viewBox="0 0 400 150" preserveAspectRatio="xMidYMin meet">
-    <defs><linearGradient id="chb" x1="0" x2="1"><stop offset="0" stop-color="#8a6a32"/><stop offset=".5" stop-color="#f0d89c"/><stop offset="1" stop-color="#8a6a32"/></linearGradient>
-      <radialGradient id="chg"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".7"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient>
-      <radialGradient id="chh" cx=".5" cy=".55"><stop offset="0" stop-color="#ffcf8a" stop-opacity=".28"/><stop offset="1" stop-color="#ffcf8a" stop-opacity="0"/></radialGradient></defs>
-    <ellipse cx="200" cy="85" rx="190" ry="85" fill="url(#chh)"/>
-    <ellipse cx="200" cy="4" rx="22" ry="5" fill="url(#chb)"/>
+    <defs><linearGradient id="chb" x1="0" x2="1"><stop offset="0" stop-color="#4a2e14"/><stop offset=".5" stop-color="#b08442"/><stop offset="1" stop-color="#4a2e14"/></linearGradient>
+      <linearGradient id="chs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6e0"/><stop offset="1" stop-color="#f0d6a2"/></linearGradient>
+      <radialGradient id="chg"><stop offset="0" stop-color="#ffd59a" stop-opacity=".75"/><stop offset="1" stop-color="#ffd59a" stop-opacity="0"/></radialGradient>
+      <radialGradient id="chh" cx=".5" cy=".5"><stop offset="0" stop-color="#ffcf8a" stop-opacity=".3"/><stop offset="1" stop-color="#ffcf8a" stop-opacity="0"/></radialGradient></defs>
+    <ellipse cx="200" cy="80" rx="190" ry="80" fill="url(#chh)"/>
+    <ellipse cx="200" cy="4" rx="18" ry="4.5" fill="url(#chb)"/>
     <g class="sway">
-      <path d="M200 6v36" stroke="url(#chb)" stroke-width="2" stroke-dasharray="3 2"/>
-      <ellipse cx="200" cy="46" rx="7" ry="5" fill="url(#chb)"/><path d="M196 50h8l-1 40h-6z" fill="url(#chb)"/>
-      <ellipse cx="200" cy="66" rx="5" ry="4" fill="#f0d89c"/>
-      ${arm(200, 74, 46, 4, 70)}${arm(200, 96, 86, 6, 92)}
-      <ellipse cx="200" cy="96" rx="12" ry="7" fill="url(#chb)"/><path d="M194 102q6 14 12 0z" fill="url(#chb)"/>
-      ${drops}<circle cx="200" cy="120" r="3" fill="#f6f0e6"/>
+      <path d="M200 6v24" stroke="url(#chb)" stroke-width="2" stroke-dasharray="3 2"/>
+      <path d="M200 28c-9 4-9 13 0 16c9-3 9-12 0-16z" fill="none" stroke="url(#chb)" stroke-width="1.8"/>
+      <path d="M195 44h10l-2 8h-6z" fill="url(#chb)"/>
+      <ellipse cx="200" cy="56" rx="6" ry="4" fill="url(#chb)"/>
+      <path d="M197 58h6l-1 48h-4z" fill="url(#chb)"/>
+      ${arms}
+      <ellipse cx="200" cy="62" rx="7" ry="4" fill="url(#chb)"/><ellipse cx="200" cy="84" rx="10" ry="5" fill="url(#chb)"/>
+      <path d="M190 104q10 12 20 0q-3-7-10-7q-7 0-10 7z" fill="url(#chb)"/>
+      <path d="M200 115v8" stroke="url(#chb)" stroke-width="2"/><circle cx="200" cy="126" r="3.2" fill="#b08442"/>
     </g></svg>`;
 })();
 
