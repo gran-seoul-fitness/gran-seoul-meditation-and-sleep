@@ -126,6 +126,16 @@ footer i{font-style:italic;text-transform:none;letter-spacing:.04em;font-size:14
 .svc h3 span{font-family:var(--serif);font-size:13px;color:var(--brass);margin-left:6px;font-weight:500}
 .gift-note{border:1px solid rgba(201,164,92,.45);border-radius:4px;padding:18px;text-align:center}
 
+/* 체크인 완료 화면 배경: 프런트 데스크가 보이다가 검은 막(60%)이 서서히 내려앉음 */
+#wbg{position:fixed;inset:0;z-index:-1;display:none;background:var(--walnut-900)}
+#wbg svg{width:100%;height:100%;display:block}
+#wbg::after{content:'';position:absolute;inset:0;background:#000;opacity:0}
+body.lobby #wbg{display:block}
+body.lobby #wbg::after{animation:dimIn 2.4s .3s ease forwards}
+@keyframes dimIn{to{opacity:.6}}
+#wbg::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.35),transparent 25%,transparent 55%,rgba(0,0,0,.55))}
+body.lobby #s-welcome :is(p,h2){text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 14px rgba(0,0,0,.8)}
+
 /* 체크인 모션 화면 */
 #checkin{position:fixed;inset:0;z-index:25;background:var(--walnut-900);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;cursor:pointer}
 #checkin.on{display:flex;animation:fadeIn .4s}
@@ -282,6 +292,9 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
   <div class="lift-floor"></div>
   <button class="skip" id="liftSkip">SKIP ›</button>
 </div>
+
+<!-- 체크인 완료 화면 배경: 프런트 데스크 + 서서히 어두워지는 막 -->
+<div id="wbg" aria-hidden="true"></div>
 
 <!-- 프런트 데스크 체크인 연출 (탭하면 건너뜀) -->
 <div id="checkin">
@@ -880,7 +893,7 @@ const stretchSlots = dayList.filter(d => CONFIG.stretch.weekdays.includes(d.getD
 function show(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === 's-' + name));
   window.scrollTo(0, 0);
-  document.body.className = name === 'home' || name === 'welcome' ? 'dark' : name === 'ticket' ? 'dark velvet' : '';
+  document.body.className = name === 'welcome' ? 'dark lobby' : name === 'home' ? 'dark' : name === 'ticket' ? 'dark velvet' : '';
   if (name === 'me') renderMe();
   if (name === 'gift') renderGifts();
 }
@@ -952,6 +965,7 @@ function deskSVG(id) {   // id: 그림마다 다른 이름 (같은 이름을 쓰
 $('homeDesk').innerHTML = deskSVG('home');
 $('checkinDesk').insertAdjacentHTML('afterbegin', deskSVG('ci'));
 $('liftBehind').innerHTML = deskSVG('lift');
+$('wbg').innerHTML = deskSVG('wbg');
 
 /* 엘리베이터 입장: 1층 → 7층, 문이 열리며 로비 등장 (처음 한 번만, 탭하면 건너뜀) */
 function playLift() {
