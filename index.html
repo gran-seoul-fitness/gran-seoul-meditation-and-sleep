@@ -1038,6 +1038,12 @@ function deskSVG(id) {   // id: 그림마다 다른 이름 (같은 이름을 쓰
     }
     return o;
   };
+  // 책장 (보관함 양옆)
+  const shelf = x0 => { let o = `<rect x="${x0}" y="262" width="34" height="94" fill="#24150b" stroke="#5a3820" stroke-width="1.5"/>`;
+    [266, 296, 326].forEach(y => { let x = x0 + 3; while (x < x0 + 30) { const w = 3 + ((x * 7) % 3), h = 20 + ((x * 3) % 6);
+      o += `<rect x="${x}" y="${y + 26 - h}" width="${w}" height="${h}" fill="${['#2c3d5c', '#3a2a1c', '#5c2a2a', '#2f4636'][x % 4]}"/>`; x += w + .6; }
+      o += `<rect x="${x0}" y="${y + 26}" width="34" height="2" fill="#5a3820"/>`; });
+    return o; };
   const lamp = x => `<circle class="lamp-glow" cx="${x}" cy="310" r="110" fill="url(#${id}-glow)"/>
     <path d="M${x - 36} 334 L${x + 36} 334 L${x + 23} 290 L${x - 23} 290 Z" fill="#f2d3a2"/>
     <path d="M${x - 36} 334 L${x + 36} 334" stroke="#7a1e28" stroke-width="3"/><path d="M${x - 23} 290 L${x + 23} 290" stroke="#7a1e28" stroke-width="2"/>
@@ -1064,10 +1070,20 @@ function deskSVG(id) {   // id: 그림마다 다른 이름 (같은 이름을 쓰
   <rect y="64" width="400" height="3" fill="#4a2c19"/>${dent}
   <path d="M-70 380 V200 A70 70 0 0 1 70 200 V380" fill="#2a170d" stroke="#6e4528" stroke-width="5"/>
   <path d="M330 380 V200 A70 70 0 0 1 470 200 V380" fill="#2a170d" stroke="#6e4528" stroke-width="5"/>
-  <path d="M118 380 V190 A82 82 0 0 1 282 190 V380" fill="#2a170d" stroke="#6e4528" stroke-width="6"/>
-  ${cubby(-60, 262, 8, 3)}${cubby(130, 262, 10, 3, true)}${cubby(342, 262, 8, 3)}
-  <text x="200" y="257" text-anchor="middle" font-family="Cinzel,serif" font-size="9" letter-spacing="3" fill="#c9a45c">GUEST ROOMS · 7F</text>
-  <circle cx="200" cy="168" r="5" fill="url(#${id}-brass)"/><path d="M194 172 L206 172 L210 196 L190 196 Z" fill="url(#${id}-brass)"/><circle cx="200" cy="205" r="40" fill="url(#${id}-glow)" opacity=".6"/>
+  ${cubby(-60, 262, 8, 3)}${cubby(342, 262, 8, 3)}
+  <!-- 가운데 장식장: 시계 박공 · 초록 명판 · 열쇠 보관함 · 양옆 책장 -->
+  <circle cx="200" cy="200" r="90" fill="url(#${id}-glow)" opacity=".45"/>
+  <path d="M104 214 V150 Q104 112 146 110 L168 94 Q200 76 232 94 L254 110 Q296 112 296 150 V214" fill="#2e1b0e" stroke="#6e4528" stroke-width="3"/>
+  <path d="M112 214 V152 Q112 120 148 118 L170 102 Q200 86 230 102 L252 118 Q288 120 288 152 V214" fill="none" stroke="#1f1209" stroke-width="1.5"/>
+  <rect x="88" y="226" width="224" height="158" fill="#2a180c"/>
+  <path d="M120 230 L120 206 Q160 206 176 196 L200 182 L224 196 Q240 206 280 206 L280 230 Z" fill="#4e2e18" stroke="#8a5a32" stroke-width="1.5"/>
+  <circle cx="200" cy="206" r="11" fill="#e8dcc0" stroke="url(#${id}-brass)" stroke-width="2.5"/><path d="M200 206v-7M200 206l5 3" stroke="#2a170c" stroke-width="1.3"/>
+  <rect x="140" y="236" width="120" height="18" fill="#1e3a2c" stroke="#c9a45c" stroke-width="1"/>
+  <text x="200" y="249" text-anchor="middle" font-family="Cinzel,serif" font-size="8.5" letter-spacing="2.5" fill="#e9cf96">GUEST ROOMS · 7F</text>
+  ${shelf(92)}${shelf(274)}
+  <rect x="124" y="258" width="152" height="98" fill="none" stroke="#8a5a32" stroke-width="3"/>
+  ${cubby(130, 262, 10, 3, true)}
+  <rect x="88" y="356" width="224" height="28" fill="#3a2214"/>${[96, 120, 256, 280].map(x => `<rect x="${x}" y="360" width="22" height="20" fill="#4e2e18" stroke="#6e4528" stroke-width=".8"/><circle cx="${x + 11}" cy="370" r="1.4" fill="#c9a45c"/>`).join('')}
   ${lamp(62)}${lamp(338)}
   <rect y="384" width="400" height="10" fill="#9a5f36"/><rect y="394" width="400" height="14" fill="#6a3d22"/>
   <rect y="408" width="400" height="92" fill="url(#${id}-wood)"/>${flutes}
