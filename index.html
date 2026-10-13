@@ -1213,8 +1213,8 @@ $('homeDesk').innerHTML = deskSVG('home');
       <path d="M${cx + side * dx * .45} ${y0 + 14}q${side * 6} 8 ${side} 12q${-side * 4} 2 ${-side * 5} -2" stroke="url(#chb)" stroke-width="1.4" fill="none"/>
       <path d="M${x} ${y + 14}v-5" stroke="url(#chb)" stroke-width="2"/>${shade(x, y - 4, sc)}`; };
   let arms = '';
-  // 위층 2개 + 아래층 6개 (사진처럼 2단)
-  [[30, 62, 0, .95], [36, 84, 14, 1.15], [72, 84, 12, 1.15], [104, 86, 6, 1.15]].forEach(([dx, y0, dy, sc]) => { arms += arm(-1, 200, y0, dx, dy, sc) + arm(1, 200, y0, dx, dy, sc); });
+  // 위층 2개 + 아래층 4개 (사진처럼 2단)
+  [[30, 62, 0, .95], [40, 84, 14, 1.15], [80, 84, 10, 1.15]].forEach(([dx, y0, dy, sc]) => { arms += arm(-1, 200, y0, dx, dy, sc) + arm(1, 200, y0, dx, dy, sc); });
   $('homeChand').innerHTML = `<svg viewBox="0 0 400 150" preserveAspectRatio="xMidYMin meet">
     <defs><linearGradient id="chb" x1="0" x2="1"><stop offset="0" stop-color="#4a2e14"/><stop offset=".5" stop-color="#b08442"/><stop offset="1" stop-color="#4a2e14"/></linearGradient>
       <linearGradient id="chs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6e0"/><stop offset="1" stop-color="#f0d6a2"/></linearGradient>
