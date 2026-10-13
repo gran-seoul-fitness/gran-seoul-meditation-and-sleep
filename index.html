@@ -82,7 +82,7 @@ p,h1,h2,h3,label,.status{text-wrap:balance}
 .tag{display:inline-block;font-family:var(--en);font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--brass-dark)}
 footer{text-align:center;font-family:var(--en);font-size:13px;color:var(--muted);padding:36px 0 8px;letter-spacing:.24em;text-transform:uppercase}
 footer i{font-style:normal;text-transform:none;letter-spacing:.08em;font-size:12px}
-.dark footer{color:rgba(201,164,92,.7)}
+.dark footer{color:var(--brass)}
 .banner{background:#fff3d9;border:1px solid #ecd6a6;border-radius:4px;padding:10px 14px;font-size:14px;color:#6b4a12}
 
 /* 아이보리 화면의 호텔 조명 */
@@ -106,7 +106,7 @@ body.dark #ceiling{display:none}
 .lift-ind .box span{color:#ffb36b;text-shadow:0 0 10px rgba(255,140,60,.8);font-variant-numeric:tabular-nums}
 .lift-ind .box em{font-style:normal;font-size:16px;color:#ffb36b}
 .lift-ind.ding .box{box-shadow:0 0 0 4px #3a2214,0 0 28px rgba(255,190,110,.75),inset 0 0 14px rgba(0,0,0,.8)}
-.lift-ind p{font-size:13px;letter-spacing:.4em;margin-top:12px;opacity:.85}
+.lift-ind p{font-size:14px;letter-spacing:.4em;margin-top:12px}
 .door{position:absolute;top:24%;bottom:24%;width:50%;z-index:2;transition:transform 1.2s cubic-bezier(.6,0,.3,1);
   background:linear-gradient(90deg,rgba(0,0,0,.25),transparent 30%,transparent 70%,rgba(0,0,0,.2)),var(--walnut-600);
   box-shadow:inset 0 0 0 10px var(--walnut-700),inset 0 0 0 11px var(--brass-dark)}
@@ -157,7 +157,7 @@ body.lobby #s-welcome :is(p,h2){text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 14px 
 #checkin.on{display:flex;animation:fadeIn .4s}
 #checkin .desk{width:min(440px,100%);box-shadow:none}
 #checkin .msg,#wbg .msg{font-family:var(--en);color:var(--brass-light);font-size:19px;letter-spacing:.06em;margin-top:18px;min-height:30px;text-align:center}
-#checkin .msg small,#wbg .msg small{display:block;font-family:var(--sans);font-size:13px;color:var(--brass);letter-spacing:0;margin-top:4px}
+#checkin .msg small,#wbg .msg small{display:block;font-family:var(--sans);font-size:15px;font-weight:500;color:var(--lamp);letter-spacing:0;margin-top:4px}
 .cubby-hl{opacity:0}
 #checkin.go .cubby-hl{animation:cubby 1.4s .5s ease forwards}
 @keyframes cubby{0%{opacity:0}40%,100%{opacity:1}}
@@ -180,6 +180,16 @@ label.f b{font-family:var(--en);font-size:12px;letter-spacing:.24em;text-transfo
 input[type=text],input[type=tel],select{border:0;border-bottom:1px solid var(--brass);background:transparent;border-radius:0;padding:10px 2px;font-size:17px;width:100%;color:var(--ink)}
 input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
 .choices{display:flex;gap:8px;flex-wrap:wrap}
+/* 모닝콜 시간 휠 (시 · 분을 위아래로 밀어서 선택) */
+.wheel{position:relative;display:flex;justify-content:center;align-items:center;gap:4px;height:150px;border:1px solid var(--brass);border-radius:4px;background:#fff;overflow:hidden}
+.wheel::before{content:'';position:absolute;left:14px;right:14px;top:50px;height:50px;border-top:1px solid var(--brass);border-bottom:1px solid var(--brass);background:rgba(106,29,39,.06);pointer-events:none}
+.wheel::after{content:'';position:absolute;inset:0;background:linear-gradient(#fff,rgba(255,255,255,0) 34%,rgba(255,255,255,0) 66%,#fff);pointer-events:none}
+.wcol{height:150px;width:86px;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;outline:none}
+.wcol::-webkit-scrollbar{display:none}
+.wcol div{height:50px;line-height:50px;text-align:center;scroll-snap-align:center;font-family:var(--en);font-size:30px;font-weight:600;color:#a8957f;cursor:pointer;transition:color .2s}
+.wcol div.sp{scroll-snap-align:none;cursor:default}
+.wcol div.on{color:var(--burgundy)}
+.wsep{font-family:var(--en);font-size:30px;font-weight:700;color:var(--burgundy);padding-bottom:4px}
 .choice{flex:1;min-width:88px;border:1px solid var(--brass);background:transparent;border-radius:3px;padding:12px 8px;text-align:center;cursor:pointer;font-size:15px}
 .choice[aria-pressed=true]{background:var(--burgundy);border-color:var(--burgundy);color:var(--brass-light);font-weight:700}
 .agree{display:flex;gap:10px;font-size:14.5px;align-items:flex-start;line-height:1.55;color:var(--muted)}
@@ -194,12 +204,12 @@ input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
   background:linear-gradient(170deg,#3a121a,#22080d);box-shadow:0 0 0 1px rgba(201,164,92,.5),0 10px 30px rgba(0,0,0,.5);color:var(--brass-light);text-align:center;
   animation:rise 1.1s .3s cubic-bezier(.3,0,.2,1) both}
 @keyframes rise{from{transform:translateY(34%)}to{transform:none}}
-.keycard .kc-top{display:flex;justify-content:space-between;font-family:var(--en);font-size:10px;letter-spacing:.24em;color:var(--brass)}
+.keycard .kc-top{display:flex;justify-content:space-between;font-family:var(--en);font-size:11px;letter-spacing:.24em;color:var(--brass)}
 .keycard .kc-top b{font-weight:600;color:var(--brass-light);line-height:1.1}
 .keycard .room{font-family:var(--en);font-size:14px;letter-spacing:.3em;margin-top:12px;color:var(--brass)}
 .keycard .room b{display:block;font-size:46px;letter-spacing:.04em;margin-top:4px;color:var(--brass-light);font-weight:600;line-height:1.05}
 .keycard .kc-checkin{display:inline-flex;align-items:baseline;gap:10px;margin-top:12px;padding:6px 14px;border-top:1px solid rgba(201,164,92,.45);border-bottom:1px solid rgba(201,164,92,.45)}
-.keycard .kc-checkin span{font-family:var(--en);font-size:10px;letter-spacing:.2em;color:var(--brass)}
+.keycard .kc-checkin span{font-family:var(--en);font-size:11px;letter-spacing:.2em;color:var(--brass-light)}
 .keycard .kc-checkin b{font-family:var(--en);font-size:18px;letter-spacing:.14em;color:#fff3dc;font-weight:600}
 .keycard .code{font-family:var(--en);font-size:24px;letter-spacing:.32em;font-weight:600;margin-top:8px;color:#fff3dc}
 .sleeve{position:absolute;left:0;right:0;bottom:0;height:50%;border-radius:4px;z-index:2;text-align:center;color:var(--brass-light);
@@ -209,7 +219,7 @@ input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 0 22px}
 .sleeve svg{width:44px;height:96px;stroke:var(--brass);fill:none;stroke-width:1.3;margin-bottom:10px}
 .sleeve .brand{font-family:var(--en);letter-spacing:.34em;font-size:14px;font-weight:600}
-.sleeve .tagline{font-family:var(--en);letter-spacing:.3em;font-size:8px;opacity:.75;margin-top:4px}
+.sleeve .tagline{font-family:var(--en);letter-spacing:.24em;font-size:9px;opacity:.9;margin-top:4px}
 
 /* ---------------------------------------------------------
    내 객실 (Your Stay)
@@ -271,7 +281,7 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 .merci .gname{font-family:var(--serif);font-size:20px;font-weight:500;margin-top:14px}
 .merci .code{font-family:var(--en);font-size:26px;letter-spacing:.12em;font-weight:600;color:var(--brass-dark);margin:12px 0 4px}
 .merci .who{font-size:14px;color:var(--muted)}
-.velvet .note{color:var(--brass-light);opacity:.85}
+.velvet .note{color:var(--lamp);font-size:16px;font-weight:500}
 
 /* ---------------------------------------------------------
    재생 화면
@@ -285,16 +295,16 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 .ptop{top:0;padding-top:max(20px,env(safe-area-inset-top));background:linear-gradient(180deg,rgba(0,0,0,.6),transparent)}
 .pbottom{bottom:0;flex-direction:column;align-items:stretch;padding-bottom:max(24px,env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(0,0,0,.7),transparent)}
 #player.idle .ptop,#player.idle .pbottom{opacity:0}
-.pbtn{border:1px solid rgba(201,164,92,.45);background:rgba(20,10,6,.45);color:var(--brass-light);border-radius:99px;padding:9px 16px;cursor:pointer;font-size:14px}
+.pbtn{border:1px solid rgba(201,164,92,.6);background:rgba(20,10,6,.55);color:var(--brass-light);border-radius:99px;padding:10px 16px;cursor:pointer;font-size:15px;font-weight:500}
 .pbtn.big{width:66px;height:66px;padding:0;font-size:22px;background:linear-gradient(180deg,#e7cd92,#b8924a);color:var(--walnut-900);border:0}
 .ptitle{flex:1}
 .ptitle b{display:block;font-family:var(--serif);font-weight:500;font-size:18px}
-.ptitle span{font-size:13px;opacity:.8}
+.ptitle span{font-size:14.5px;opacity:.95;font-weight:500}
 .pctl{display:flex;justify-content:center;align-items:center;gap:16px}
 .bar{height:3px;background:rgba(255,255,255,.22);border-radius:4px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--brass);width:0}
-.times{display:flex;justify-content:space-between;font-size:12px;opacity:.75}
-#cap{position:absolute;left:0;right:0;bottom:34%;text-align:center;padding:0 24px;font-size:18px;line-height:1.5;text-shadow:0 1px 8px rgba(0,0,0,.8);opacity:0;transition:opacity .5s}
+.times{display:flex;justify-content:space-between;font-size:13.5px;opacity:.92;font-weight:500}
+#cap{position:absolute;left:0;right:0;bottom:34%;text-align:center;padding:0 24px;font-size:19px;font-weight:500;word-break:keep-all;text-wrap:balance;line-height:1.5;text-shadow:0 1px 8px rgba(0,0,0,.8);opacity:0;transition:opacity .5s}
 #cap.on{opacity:1}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -385,7 +395,8 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
       <label class="f"><b>Guest Name</b>이름<input type="text" id="fName" autocomplete="name" placeholder="홍길동"></label>
       <label class="f"><b>Company</b>소속 계열사<select id="fCompany"></select></label>
       <label class="f"><b>Contact</b>연락처 · 모닝콜 문자를 받을 번호<input type="tel" id="fPhone" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000"></label>
-      <div class="f stack" style="gap:8px"><label class="f" style="gap:0"><b>Wake-up Call</b>모닝콜 받을 시간</label><div class="choices" id="fTime"></div></div>
+      <div class="f stack" style="gap:8px"><label class="f" style="gap:0"><b>Wake-up Call</b>모닝콜 받을 시간 · 위아래로 밀어서 고르세요</label>
+        <div class="wheel" id="fTime"><div class="wcol" id="wHour" tabindex="0" aria-label="시"></div><span class="wsep">:</span><div class="wcol" id="wMin" tabindex="0" aria-label="분"></div></div></div>
       <div class="f stack" style="gap:8px"><label class="f" style="gap:0"><b>Membership</b>피트니스 회원이신가요?</label>
         <div class="choices" id="fMember"><button class="choice" data-v="회원">회원</button><button class="choice" data-v="비회원">아직 아니에요</button></div></div>
       <div class="rule">◆</div>
@@ -473,7 +484,7 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 
     <div class="card stack" style="gap:6px">
       <div class="row" style="justify-content:space-between"><span class="en" style="font-size:16px">Morning Reset 15</span><span class="small muted">화·목 출근 전</span></div>
-      <p class="small muted">7층 피트니스 GX룸 · 정장 차림 그대로 · 선착순</p>
+      <p class="small muted" id="resetNote"></p>
       <div id="slots"></div>
     </div>
 
@@ -540,7 +551,7 @@ const CONFIG = {
   days: 14,
   goal: 10,                      // 완주 기준: 모닝콜 + 턴다운을 합쳐 몇 번 들으면 완주인지
   dailyLimit: 2,                 // 하루 인증 최대 횟수 (모닝콜 1번 + 턴다운 1번)
-  morningTimes: ['07:00', '07:30', '08:00'],
+  wake: { from: 5, to: 10, step: 5, initial: '07:00' },   // 모닝콜 시간: 5시~10시, 5분 단위, 처음 보이는 시간 7:00
   companies: [   // 임시 이름입니다. 실제 30개 계열사 명단으로 바꿔주세요
     '계열사 01', '계열사 02', '계열사 03', '계열사 04', '계열사 05', '계열사 06', '계열사 07', '계열사 08', '계열사 09', '계열사 10',
     '계열사 11', '계열사 12', '계열사 13', '계열사 14', '계열사 15', '계열사 16', '계열사 17', '계열사 18', '계열사 19', '계열사 20',
@@ -553,7 +564,7 @@ const CONFIG = {
     { id: 'sleep',   name: '수면실 1회 이용권',         desc: '수면실 1회 예약 이용' },
     { id: 'amenity', name: '어메니티 3종',              desc: '샴푸 · 바디워시 · 바디로션' }
   ],
-  stretch: { time: '08:20~08:35', weekdays: [2, 4], capacity: 15 },  // 2=화, 4=목
+  stretch: { time: '08:20~08:35', weekdays: [2, 4], capacity: 2 },  // 2=화, 4=목 · capacity: 하루(회차)당 자리 수
   serverUrl: ''                // 구글 Apps Script 웹앱 주소. 비워두면 데모 모드(새로고침하면 기록이 사라짐)
 };
 
@@ -930,6 +941,7 @@ function show(name) {
   document.body.className = name === 'welcome' ? 'dark lobby' : name === 'home' ? 'dark' : name === 'ticket' ? 'dark velvet' : '';
   if (name === 'me') renderMe();
   if (name === 'gift') renderGifts();
+  if (name === 'signup') requestAnimationFrame(initWheel);   // 화면이 보인 뒤에 휠 위치를 맞춤
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) show(b.dataset.go); });
 
@@ -1061,15 +1073,39 @@ function playCheckin(room) {
 }
 
 /* --- 신청서 --- */
+$('resetNote').textContent = `7층 피트니스 GX룸 · 정장 차림 그대로 · 회차당 ${CONFIG.stretch.capacity}명 선착순`;
 $('fCompany').innerHTML = '<option value="">선택해주세요</option>' + CONFIG.companies.map(c => `<option>${c}</option>`).join('');
-$('fTime').innerHTML = CONFIG.morningTimes.map(t => `<button class="choice" data-v="${t}">${t}</button>`).join('');
+/* 모닝콜 시간 휠 */
+const wakeSel = { h: CONFIG.wake.initial.slice(0, 2), m: CONFIG.wake.initial.slice(3) };
+const pad2 = n => String(n).padStart(2, '0');
+const WH = 50;   // 한 칸 높이 (CSS .wcol div 높이와 같아야 함)
+function buildCol(col, values, key) {
+  col.innerHTML = '<div class="sp"></div>' + values.map(v => `<div data-v="${v}">${v}</div>`).join('') + '<div class="sp"></div>';
+  let t;
+  col.addEventListener('scroll', () => {
+    const i = Math.max(0, Math.min(values.length - 1, Math.round(col.scrollTop / WH)));
+    wakeSel[key] = values[i];
+    col.querySelectorAll('[data-v]').forEach((d, j) => d.classList.toggle('on', j === i));
+    clearTimeout(t); t = setTimeout(() => {   // 마지막 시각(10:00) 뒤로는 못 가게
+      if (+wakeSel.h === CONFIG.wake.to && wakeSel.m !== '00') setCol($('wMin'), '00');
+    }, 150);
+  });
+  col.addEventListener('click', e => { const d = e.target.closest('[data-v]'); if (d) setCol(col, d.dataset.v, true); });
+}
+function setCol(col, v, smooth) {
+  const i = [...col.querySelectorAll('[data-v]')].findIndex(d => d.dataset.v === v);
+  col.scrollTo({ top: i * WH, behavior: smooth ? 'smooth' : 'auto' });
+}
+buildCol($('wHour'), Array.from({ length: CONFIG.wake.to - CONFIG.wake.from + 1 }, (_, i) => pad2(CONFIG.wake.from + i)), 'h');
+buildCol($('wMin'), Array.from({ length: 60 / CONFIG.wake.step }, (_, i) => pad2(i * CONFIG.wake.step)), 'm');
+function initWheel() { setCol($('wHour'), wakeSel.h); setCol($('wMin'), wakeSel.m); }
 document.querySelectorAll('.choices').forEach(group => group.addEventListener('click', e => {
   const b = e.target.closest('.choice'); if (!b) return;
   group.querySelectorAll('.choice').forEach(x => x.setAttribute('aria-pressed', x === b));
 }));
 const picked = id => $(id).querySelector('[aria-pressed=true]')?.dataset.v;
 $('fSubmit').onclick = async () => {
-  const u = { name: $('fName').value.trim(), company: $('fCompany').value, phone: digits($('fPhone').value), morningTime: picked('fTime'), member: picked('fMember') };
+  const u = { name: $('fName').value.trim(), company: $('fCompany').value, phone: digits($('fPhone').value), morningTime: `${wakeSel.h}:${wakeSel.m}`, member: picked('fMember') };
   const err = !u.name ? '이름을 입력해주세요' : !u.company ? '계열사를 선택해주세요' : !/^01\d{8,9}$/.test(u.phone) ? '연락처를 확인해주세요' : !u.morningTime ? '모닝콜 시간을 골라주세요' : !u.member ? '회원 여부를 골라주세요' : !($('fAgree1').checked && $('fAgree2').checked) ? '필수 동의 항목에 체크해주세요' : '';
   $('fErr').textContent = err; if (err) return;
   $('fSubmit').disabled = true;
