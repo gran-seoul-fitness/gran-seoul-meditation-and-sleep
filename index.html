@@ -28,7 +28,7 @@
   --card:#fffaf1;
   --line:#e2d2b4;
   --ink:#2b1b12;
-  --muted:#5b4736;
+  --muted:#6a5644;
   --lamp:#f3d6a8;
 
   --en:'Cinzel',serif;                       /* 영문 제목 · 숫자 */
@@ -48,6 +48,10 @@ button,input,select{font:inherit;color:inherit}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 h1,h2,h3{margin:0;line-height:1.25;font-weight:600}
 p{margin:0;line-height:1.7}
+/* 2안: 한글은 모두 명조(고운바탕)로 통일. 입력칸·시간·날짜 숫자만 또렷한 고딕 */
+body,button{font-family:var(--serif)}
+input,select,.times,.slot b,.slot .small,.banner{font-family:var(--sans)}
+.btn{letter-spacing:.02em}
 /* 한글이 단어 중간에서 끊기지 않게, 줄 길이는 고르게 */
 body{word-break:keep-all;overflow-wrap:break-word}
 p,h1,h2,h3,label,.status{text-wrap:balance}
@@ -57,7 +61,7 @@ p,h1,h2,h3,label,.status{text-wrap:balance}
 .eyebrow{font-family:var(--en);font-size:13.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--brass-dark);font-weight:600}
 .dark .eyebrow{color:var(--brass)}
 .muted{color:var(--muted)}
-.dark .muted{color:rgba(243,214,168,.86);font-weight:500}
+.dark .muted{color:rgba(243,214,168,.78);font-weight:400}
 .small{font-size:15px}
 .stack{display:flex;flex-direction:column;gap:12px}
 .row{display:flex;gap:10px;align-items:center}
@@ -127,13 +131,13 @@ body.dark #ceiling{display:none}
 .lamp-glow{opacity:.95;animation:flicker 4s ease-in-out infinite}
 @keyframes flicker{0%,100%{opacity:.95}45%{opacity:.82}60%{opacity:1}}
 .hero-copy{text-align:center;padding:26px 6px 4px}
-.hero-copy>p{font-size:17px;color:var(--lamp)!important;line-height:1.75}
+.hero-copy>p{font-size:17px;font-weight:400;color:rgba(246,233,212,.9)!important;line-height:1.75}
 .hero-copy h1{font-family:var(--en);font-weight:600;font-size:34px;line-height:1.15;color:var(--brass-light);margin:12px 0 14px}
 .hero-copy h1 i{font-style:normal;font-weight:500;font-size:24px;color:var(--brass)}
 .plate{display:inline-block;font-family:var(--en);font-weight:600;letter-spacing:.32em;font-size:12px;color:var(--walnut-900);padding:6px 12px 6px 16px;border-radius:2px;
   background:linear-gradient(180deg,#e7cd92,#b8924a);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 2px 6px rgba(0,0,0,.4)}
 .svc-list{border-top:1px solid rgba(201,164,92,.35)}
-.svc p{font-size:15.5px;line-height:1.65}
+.svc p{font-size:15.5px;line-height:1.7;letter-spacing:-.01em}
 .svc{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding:18px 2px;border-bottom:1px solid rgba(201,164,92,.35)}
 .svc{grid-template-columns:56px 1fr!important}
 .svc .ico{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,206,130,.36),rgba(255,206,130,0) 72%)}
@@ -175,7 +179,7 @@ body.lobby #s-welcome :is(p,h2){text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 14px 
 /* ---------------------------------------------------------
    신청서 (Registration Card)
    --------------------------------------------------------- */
-label.f{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:500;color:var(--ink)}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:400;color:var(--ink)}
 label.f b{font-family:var(--en);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--brass-dark);font-weight:600}
 input[type=text],input[type=tel],select{border:0;border-bottom:1px solid var(--brass);background:transparent;border-radius:0;padding:10px 2px;font-size:17px;width:100%;color:var(--ink)}
 input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
@@ -246,7 +250,11 @@ input:focus,select:focus{outline:none;border-bottom:2px solid var(--burgundy)}
 .done .hanger{background:var(--walnut-700)}
 @keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
 .scenes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.scenes button{border:1px solid var(--line);background:#fff;border-radius:4px;padding:14px 12px;text-align:left;cursor:pointer;font-size:14px}
+.scenes{gap:10px!important}
+.scenes button{border:1px solid var(--line);background:#fff;border-radius:4px;padding:0;overflow:hidden;text-align:left;cursor:pointer;font-size:14px}
+.scenes button img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--walnut-800)}
+.scenes button .t{display:block;padding:10px 12px 12px}
+.scenes button.now{box-shadow:0 0 0 2px var(--burgundy);border-color:var(--burgundy)}
 .scenes button b{display:block;font-family:var(--serif);font-size:14px;font-weight:500}
 summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 summary::-webkit-details-marker{display:none}
@@ -1147,7 +1155,7 @@ function setCol(col, v, smooth) {
 }
 buildCol($('wHour'), Array.from({ length: CONFIG.wake.to - CONFIG.wake.from + 1 }, (_, i) => pad2(CONFIG.wake.from + i)), 'h');
 buildCol($('wMin'), Array.from({ length: 60 / CONFIG.wake.step }, (_, i) => pad2(i * CONFIG.wake.step)), 'm');
-function initWheel() { setCol($('wHour'), wakeSel.h); setCol($('wMin'), wakeSel.m); }
+function initWheel() { setCol($('wHour'), wakeSel.h); setCol($('wMin'), wakeSel.m); ['wHour', 'wMin'].forEach(id => $(id).dispatchEvent(new Event('scroll'))); }
 document.querySelectorAll('.choices').forEach(group => group.addEventListener('click', e => {
   const b = e.target.closest('.choice'); if (!b) return;
   group.querySelectorAll('.choice').forEach(x => x.setAttribute('aria-pressed', x === b));
@@ -1185,6 +1193,18 @@ $('logout').onclick = () => { state.code = null; state.data = null; Device.clear
 
 async function refresh() { state.data = await Store.getUser(state.code); }
 
+/* 다른 풍경 카드 사진: 재생 화면 그림을 한 번 찍어서 작게 저장해 둠 */
+const thumbCache = {};
+function sceneThumb(k) {
+  if (!thumbCache[k]) {
+    ENGINE[k](12);
+    const c = document.createElement('canvas'); c.width = 480; c.height = 300;
+    c.getContext('2d').drawImage(ENGINE.cv, 0, 0, 480, 300);
+    thumbCache[k] = c.toDataURL('image/jpeg', .8);
+  }
+  return thumbCache[k];
+}
+
 /* --- 내 2주 --- */
 const doneCount = () => state.data.logs.length;
 const has = (kind, date) => state.data.logs.some(l => l.kind === kind && l.date === date);
@@ -1219,7 +1239,7 @@ async function renderMe() {
   $('cardNight').classList.toggle('done', nDone);
   $('nHang').textContent = nDone ? 'Do not disturb' : 'Turndown';
   $('nStatus').textContent = nDone ? '오늘 턴다운 인증 완료 ✓\n다시 들어도 기록되지 않아요' : SCENES[tonight].sub;
-  $('sceneList').innerHTML = NIGHT_ORDER.map(k => `<button data-play="${k}"><b>${SCENES[k].name}</b><span class="muted small">${SCENES[k].sub}</span></button>`).join('');
+  $('sceneList').innerHTML = NIGHT_ORDER.map(k => `<button data-play="${k}" class="${k === tonight ? 'now' : ''}"><img src="${sceneThumb(k)}" alt="${SCENES[k].name} 풍경"><span class="t"><b>${SCENES[k].name}</b><span class="muted small">${SCENES[k].sub}</span></span></button>`).join('');
 
   const counts = await Store.slotCounts().catch(() => ({}));
   const mine = state.data.bookings.map(b => b.slot);
