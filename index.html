@@ -288,17 +288,56 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
    --------------------------------------------------------- */
 #player{position:fixed;inset:0;background:#000;color:var(--lamp);z-index:40;display:none}
 #player.on{display:block}
+#player .pwin{position:absolute;inset:0;overflow:hidden}
 #player canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* B안: 황동 액자(객실 창문) 안에 풍경 */
+#player.window{background:radial-gradient(ellipse at 50% 30%,#3a2416,var(--walnut-900) 70%)}
+#player.window .pwin{top:calc(196px + env(safe-area-inset-top));left:24px;right:24px;bottom:220px;border-radius:999px 999px 6px 6px;
+  box-shadow:0 0 0 3px var(--walnut-700),0 0 0 6px var(--brass),0 0 0 9px var(--walnut-800),0 0 0 10px var(--brass-dark),0 20px 50px rgba(0,0,0,.7)}
+#player.window .pwin::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 40px rgba(0,0,0,.55);pointer-events:none}
+#player.window #cap{bottom:240px;font-size:17px}
+#player.window .ptop,#player.window .pbottom{background:none}
+#player.window.idle .ptop,#player.window.idle .pbottom{opacity:1}
+.pplate{display:inline-block;white-space:nowrap;font-family:var(--en);font-weight:600;font-size:10.5px;letter-spacing:.2em;color:var(--walnut-900);background:linear-gradient(180deg,#e7cd92,#b8924a);padding:3px 8px;border-radius:2px;margin-bottom:6px}
+/* 시작 연출 */
+#pintro{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;transition:opacity .7s;cursor:pointer}
+#pintro.out{opacity:0;pointer-events:none}
+#pintro.morning{background:radial-gradient(circle at 50% 38%,#fff8e8,#f6e6c6 45%,#e9cf9f);color:var(--ink)}
+#pintro.night{background:radial-gradient(circle at 50% 38%,#3a2416,var(--walnut-900) 70%);color:var(--lamp)}
+.pi-art{height:250px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.pi-art svg{width:170px;height:170px;overflow:visible}
+#pintro.morning .pi-art svg{animation:ring 1.2s ease-in-out infinite;transform-origin:50% 60%}
+.pi-en{font-family:var(--en);font-weight:600;font-size:32px;letter-spacing:.06em}
+#pintro.morning .pi-en{color:var(--burgundy)}
+#pintro.night .pi-en{color:var(--brass-light)}
+.pi-ko{font-family:var(--serif);font-weight:700;font-size:20px;margin-top:10px}
+.pi-room{font-family:var(--en);font-weight:600;font-size:14px;letter-spacing:.24em;margin-top:14px;color:var(--brass-dark)}
+#pintro.night .pi-room{color:var(--brass)}
+.pi-go{width:auto;min-width:220px;margin-top:28px;font-size:18px;padding:18px 28px}
+.pi-tip{font-size:14px;margin-top:20px;line-height:1.6;opacity:.85}
+/* 도어행어 뒤집힘 */
+.dnd{width:110px;height:230px;position:relative;transform-style:preserve-3d;transform-origin:50% 20px;animation:hangSwing 3s ease-in-out infinite}
+.dnd>div{position:absolute;inset:0;border-radius:55px 55px 10px 10px;backface-visibility:hidden;display:flex;align-items:flex-start;justify-content:center;padding-top:82px;box-shadow:0 0 0 2px var(--brass),0 18px 34px rgba(0,0,0,.55)}
+.dnd>div::before{content:'';position:absolute;top:18px;left:50%;width:48px;height:48px;margin-left:-24px;border-radius:50%;background:var(--walnut-900);box-shadow:inset 0 0 0 2px var(--brass)}
+.dnd span{writing-mode:vertical-rl;font-family:var(--en);font-weight:600;letter-spacing:.1em;font-size:13px;color:var(--brass-light);white-space:nowrap}
+.dnd .f1{background:linear-gradient(170deg,#7a2331,var(--burgundy))}
+.dnd .f2{background:linear-gradient(170deg,#3a2416,#22140c);transform:rotateY(180deg)}
+#pintro.night.flip .dnd>div{transition:transform 1s cubic-bezier(.5,0,.2,1)}
+#pintro.night.flip .dnd .f1{transform:rotateY(180deg)}
+#pintro.night.flip .dnd .f2{transform:rotateY(360deg)}
+@keyframes hangSwing{0%,100%{rotate:-3deg}50%{rotate:3deg}}
 #dim{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 8s;pointer-events:none}
 #dim.on{opacity:.88}
 .ptop,.pbottom{position:absolute;left:0;right:0;padding:20px;display:flex;align-items:center;gap:12px;transition:opacity .6s}
-.ptop{top:0;padding-top:max(20px,env(safe-area-inset-top));background:linear-gradient(180deg,rgba(0,0,0,.6),transparent)}
-.pbottom{bottom:0;flex-direction:column;align-items:stretch;padding-bottom:max(24px,env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(0,0,0,.7),transparent)}
+.ptop{top:0;padding-top:max(20px,env(safe-area-inset-top));padding-bottom:60px;background:linear-gradient(180deg,rgba(14,8,4,.82),rgba(14,8,4,.45) 60%,transparent)}
+.pbottom{bottom:0;flex-direction:column;align-items:stretch;padding-top:70px;padding-bottom:max(24px,env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(14,8,4,.9),rgba(14,8,4,.6) 60%,transparent)}
 #player.idle .ptop,#player.idle .pbottom{opacity:0}
 .pbtn{border:1px solid rgba(201,164,92,.6);background:rgba(20,10,6,.55);color:var(--brass-light);border-radius:99px;padding:10px 16px;cursor:pointer;font-size:15px;font-weight:500}
 .pbtn.big{width:66px;height:66px;padding:0;font-size:22px;background:linear-gradient(180deg,#e7cd92,#b8924a);color:var(--walnut-900);border:0}
 .ptitle{flex:1}
-.ptitle b{display:block;font-family:var(--serif);font-weight:500;font-size:18px}
+.ptop{flex-wrap:wrap;justify-content:space-between}
+.ptitle{text-align:center;order:3;flex:0 0 100%;margin-top:4px}
+.ptitle b{display:block;font-family:var(--serif);font-weight:700;font-size:19px;color:#fff6e4;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 .ptitle span{font-size:14.5px;opacity:.95;font-weight:500}
 .pctl{display:flex;justify-content:center;align-items:center;gap:16px}
 .bar{height:3px;background:rgba(255,255,255,.22);border-radius:4px;overflow:hidden}
@@ -451,6 +490,7 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 <section class="screen" id="s-me">
   <div class="stack" style="gap:16px">
     <div id="previewBanner" class="banner" hidden></div>
+    <div id="inappTip" class="banner" hidden>지금 앱 안의 브라우저로 열려 있어요. 화면을 잠가도 계속 들으려면 오른쪽 위 메뉴에서 <b>'다른 브라우저로 열기'</b>를 눌러 사파리·크롬·삼성인터넷으로 열어주세요.</div>
     <button class="btn ghost" id="demoFill" hidden>[데모] 테스트용 기록 채우기</button>
     <div class="row" style="justify-content:space-between;align-items:flex-end">
       <div class="head"><p class="eyebrow" id="meDay"></p><h2 class="ko-title" style="font-size:24px;margin-top:6px" id="meHello"></h2></div>
@@ -529,10 +569,19 @@ body.velvet{background:repeating-linear-gradient(90deg,#4a1219 0 14px,#5c1820 26
 
 <!-- 재생 화면 -->
 <div id="player">
-  <canvas id="c" width="1600" height="900"></canvas>
+  <div class="pwin"><canvas id="c" width="1600" height="900"></canvas></div>
   <div id="cap"></div>
   <div id="dim"></div>
-  <div class="ptop"><button class="pbtn" id="pClose">✕ 닫기</button><div class="ptitle"><b id="pTitle"></b><span id="pSub"></span></div><button class="pbtn" id="pCC">자막 켜기</button></div>
+  <div class="ptop"><button class="pbtn" id="pClose">✕ 닫기</button><div class="ptitle"><span class="pplate" id="pPlate"></span><b id="pTitle"></b><span id="pSub"></span></div><button class="pbtn" id="pCC">자막 켜기</button></div>
+  <!-- 시작 연출: 모닝콜은 울리는 전화기, 턴다운은 도어행어 -->
+  <div id="pintro" hidden>
+    <div class="pi-art" id="piArt"></div>
+    <p class="pi-en" id="piEn"></p>
+    <p class="pi-ko" id="piKo"></p>
+    <p class="pi-room" id="piRoom"></p>
+    <button class="btn wine pi-go" id="piGo" hidden></button>
+    <p class="pi-tip" id="piTip" hidden>화면을 잠가도 계속 들으려면<br>사파리·크롬·삼성인터넷으로 열어주세요.</p>
+  </div>
   <div class="pbottom">
     <div class="bar"><i id="pBar"></i></div>
     <div class="times"><span id="pNow">0:00</span><span id="pDur"></span></div>
@@ -1145,6 +1194,7 @@ async function renderMe() {
   $('previewBanner').hidden = td.mode === 'live' && !!CONFIG.serverUrl;
   $('previewBanner').textContent = !CONFIG.serverUrl ? '데모 모드입니다. 새로고침하면 기록이 사라져요. 구글 시트를 연결하면 실제로 저장됩니다.' : td.mode === 'before' ? `미리보기 중입니다. 기록은 ${fmtDate(dayList[0])}부터 쌓입니다.` : '프로모션 기간이 끝났습니다. 참여해주셔서 감사합니다.';
   $('demoFill').hidden = !!CONFIG.serverUrl;
+  $('inappTip').hidden = !IN_APP;
   $('meDay').textContent = `Day ${td.idx + 1} / ${CONFIG.days}`;
   $('meHello').textContent = `${user.name}님의 객실`;
   $('meRoom').textContent = `ROOM ${user.room}`;
@@ -1226,10 +1276,53 @@ let cur = null, playing = false, startT = 0, ccOn = true, timerMin = 0, timerEnd
 const fmt = x => `${Math.floor(x / 60)}:${String(Math.floor(x % 60)).padStart(2, '0')}`;
 document.addEventListener('click', e => { const b = e.target.closest('[data-play]'); if (b) openPlayer(b.dataset.play); });
 
+/* 재생 화면 모양: 'full' = 풍경 꽉 차게(A안), 'window' = 황동 액자 안에 풍경(B안) */
+const PLAYER_STYLE = 'full';
+player.classList.toggle('window', PLAYER_STYLE === 'window');
+
+/* 앱 안 브라우저(네이버·카카오톡·구글 앱 등)인지: 이런 곳은 화면을 잠그면 소리가 멈추는 경우가 많음 */
+const IN_APP = /NAVER|KAKAOTALK|GSA\/|Instagram|FBAN|FBAV|Line\/|DaumApps|everytimeApp/i.test(navigator.userAgent);
+
+const PHONE_ART = `<svg viewBox="0 0 60 60" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 24c0-8 9-12 20-12s20 4 20 12l-7 2-3-6H20l-3 6z" fill="#f4ead6" stroke="#8a6a32" stroke-width="1.4"/>
+  <path d="M17 28h26l5 20H12z" fill="#fbf4e6" stroke="#8a6a32" stroke-width="1.4"/>
+  <circle cx="30" cy="37" r="7" stroke="#c9a45c" stroke-width="1.4"/><circle cx="30" cy="37" r="2" fill="#6a1d27"/>
+  <path d="M44 46c6 2 8 6 6 10" stroke="#6a1d27" stroke-width="1.4"/></svg>`;
+const HANGER_ART = `<div class="dnd"><div class="f1"><span>Turndown</span></div><div class="f2"><span>Do Not Disturb</span></div></div>`;
+
+let introT;
+function showIntro(key) {
+  const night = key !== 'morning', u = state.data && state.data.user, intro = $('pintro');
+  intro.className = night ? 'night' : 'morning'; intro.hidden = false;
+  $('piArt').innerHTML = night ? HANGER_ART : PHONE_ART;
+  $('piEn').textContent = night ? 'Good Night' : 'Good Morning';
+  $('piKo').textContent = night ? `오늘 밤 · ${SCENES[key].name}` : `${u ? u.name + '님, ' : ''}모닝콜입니다`;
+  $('piRoom').textContent = u ? `ROOM ${u.room}${night ? '' : ' · ' + u.morningTime}` : 'GRAN SEOUL · 7F';
+  $('piGo').hidden = true; $('piGo').textContent = night ? '들어가기' : '전화 받기';
+  $('piTip').hidden = !IN_APP;
+  if (night) setTimeout(() => intro.classList.add('flip'), 900);   // Turndown → Do Not Disturb
+}
+function hideIntro() { clearTimeout(introT); $('pintro').classList.add('out'); setTimeout(() => { $('pintro').hidden = true; }, 700); }
+$('pintro').onclick = e => { if (e.target.id === 'piGo') return; if (!audio.paused) hideIntro(); };
+$('piGo').onclick = () => { togglePlay(true).then(ok => { if (ok) hideIntro(); }); };
+
+/* 잠금 화면 · 알림창에 제목과 재생 버튼 보이기 */
+function setMediaSession(s, key) {
+  if (!('mediaSession' in navigator)) return;
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({ title: s.name, artist: `GRAN SEOUL 7F · ${key === 'morning' ? 'Morning Call' : 'Turndown'}`, album: 'Morning Call & Turndown' });
+    navigator.mediaSession.setActionHandler('play', () => togglePlay(true));
+    navigator.mediaSession.setActionHandler('pause', () => togglePlay(false));
+    navigator.mediaSession.setActionHandler('seekbackward', () => { audio.currentTime = Math.max(0, audio.currentTime - 15); });
+  } catch (e) {}
+}
+
 function openPlayer(key) {
   cur = key;
   const s = SCENES[key];
   $('pTitle').textContent = s.name; $('pSub').textContent = s.sub; $('pDur').textContent = fmt(s.dur);
+  $('pPlate').textContent = state.data ? `GRAN SEOUL · 7F · ROOM ${state.data.user.room}` : 'GRAN SEOUL · 7F';
+  showIntro(key); setMediaSession(s, key);
   $('pTimer').hidden = key === 'morning'; timerMin = 0; timerEnd = 0; $('pTimer').textContent = '끄기 타이머';
   // 인증: 재생 버튼을 누르는 순간 기록. 하루 최대 2번 (모닝콜 1번 + 턴다운 1번)
   if (state.code && state.data) {
@@ -1241,13 +1334,15 @@ function openPlayer(key) {
   audio.src = s.audio; audio.currentTime = 0;
   player.classList.add('on'); $('dim').classList.remove('on');
   startT = performance.now();
-  togglePlay(true); wake(); requestAnimationFrame(frame);
+  // 바로 재생 시도: 되면 연출을 2.4초 보여주고 사라짐 / 폰이 자동 재생을 막으면 '전화 받기' 버튼
+  togglePlay(true).then(ok => { if (ok) introT = setTimeout(hideIntro, 2400); else $('piGo').hidden = false; });
+  wake(); requestAnimationFrame(frame);
 }
-function closePlayer() { audio.pause(); playing = false; timerEnd = 0; player.classList.remove('on'); cur = null; renderMe(); }
+function closePlayer() { audio.pause(); playing = false; timerEnd = 0; clearTimeout(introT); $('pintro').hidden = true; player.classList.remove('on'); cur = null; renderMe(); }
 function togglePlay(force) {
   const go = force ?? audio.paused;
-  if (go) audio.play().then(() => { playing = true; $('pPlay').textContent = '❚❚'; }).catch(() => { $('pPlay').textContent = '▶'; });
-  else { audio.pause(); playing = false; $('pPlay').textContent = '▶'; }
+  if (go) return audio.play().then(() => { playing = true; $('pPlay').textContent = '❚❚'; return true; }).catch(() => { $('pPlay').textContent = '▶'; return false; });
+  audio.pause(); playing = false; $('pPlay').textContent = '▶'; return Promise.resolve(false);
 }
 function frame(now) {
   if (!cur) return;
